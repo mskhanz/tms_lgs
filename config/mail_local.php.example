@@ -1,0 +1,85 @@
+<?php
+
+/**
+ * LIVE SERVER mail config for training.lcbkp.gov.pk
+ *
+ * 1. Copy this file to: config/mail_local.php
+ * 2. Choose ONE option below (Option A recommended for cPanel)
+ * 3. Run: php artisan config:clear && php artisan mail:diagnose
+ * 4. Test: php artisan mail:test your@email.com
+ */
+
+return [
+
+    /*
+    |--------------------------------------------------------------------------
+    | OPTION A — cPanel email (RECOMMENDED on live server)
+    |--------------------------------------------------------------------------
+    | Create email in cPanel: e.g. training@lcbkp.gov.pk
+    | Then set these in .env AND uncomment the block below:
+    |
+    | MAIL_MAILER=failover
+    | MAIL_FAILOVER_MAILERS=cpanel_smtp,sendmail
+    | MAIL_CPANEL_HOST=localhost
+    | MAIL_CPANEL_PORT=587
+    | MAIL_CPANEL_ENCRYPTION=tls
+    | MAIL_CPANEL_USERNAME=training@lcbkp.gov.pk
+    | MAIL_CPANEL_PASSWORD=your-cpanel-email-password
+    | MAIL_FROM_ADDRESS=training@lcbkp.gov.pk
+    | MAIL_FROM_NAME="LGS Training Management System"
+    */
+
+    'default' => env('MAIL_MAILER', 'failover'),
+
+    'from' => [
+        'address' => env('MAIL_FROM_ADDRESS', 'training@lcbkp.gov.pk'),
+        'name' => env('MAIL_FROM_NAME', 'LGS Training Management System'),
+    ],
+
+    'mailers' => [
+        'failover' => [
+            'transport' => 'failover',
+            'mailers' => ['cpanel_smtp', 'sendmail'],
+        ],
+        'cpanel_smtp' => [
+            'transport' => 'smtp',
+            'host' => env('MAIL_CPANEL_HOST', 'localhost'),
+            'port' => (int) env('MAIL_CPANEL_PORT', 587),
+            'encryption' => env('MAIL_CPANEL_ENCRYPTION', 'tls'),
+            'username' => env('MAIL_CPANEL_USERNAME'),
+            'password' => env('MAIL_CPANEL_PASSWORD'),
+            'timeout' => 30,
+        ],
+        'sendmail' => [
+            'transport' => 'sendmail',
+            'path' => env('MAIL_SENDMAIL_PATH', '/usr/sbin/sendmail -t -i'),
+        ],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | OPTION B — Gmail SMTP (works locally, often BLOCKED on gov hosting)
+    |--------------------------------------------------------------------------
+    | MAIL_MAILER=smtp
+    | MAIL_HOST=smtp.gmail.com
+    | MAIL_PORT=587
+    | MAIL_USERNAME=mskhancode01@gmail.com
+    | MAIL_PASSWORD="wofn bqca vxst gter"
+    | MAIL_ENCRYPTION=tls
+    | MAIL_FROM_ADDRESS=mskhancode01@gmail.com
+    */
+
+    /*
+    |--------------------------------------------------------------------------
+    | OPTION C — Domain mail server (mail.lcbkp.gov.pk)
+    |--------------------------------------------------------------------------
+    | MAIL_MAILER=smtp
+    | MAIL_HOST=mail.lcbkp.gov.pk
+    | MAIL_PORT=465
+    | MAIL_ENCRYPTION=ssl
+    | MAIL_USERNAME=training@lcbkp.gov.pk
+    | MAIL_PASSWORD=your-password
+    | MAIL_FROM_ADDRESS=training@lcbkp.gov.pk
+    | MAIL_VERIFY_PEER=false
+    */
+];
