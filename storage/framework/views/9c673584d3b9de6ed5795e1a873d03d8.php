@@ -1,7 +1,8 @@
 <?php
     $submission = $submissions->get($assignment->id);
     $status = $assignment->traineeStatus();
-    if ($submission?->isSubmitted()) {
+    $isSubmitted = $submission?->isSubmitted();
+    if ($isSubmitted) {
         $badgeLabel = $submission->isLate() ? 'Late' : 'Submitted';
         $badgeClass = $submission->isLate() ? 'bg-warning text-dark' : 'bg-success text-white';
     } elseif ($submission) {
@@ -9,7 +10,7 @@
         $badgeClass = 'bg-info text-white';
     } else {
         $badgeLabel = match ($status) {
-            'open' => 'Not started',
+            'open' => 'Not submitted',
             'scheduled' => $assignment->traineeStatusLabel(),
             'closed' => 'Closed',
             default => 'Inactive',
@@ -41,13 +42,18 @@
                 <i class="bi bi-calendar-event me-1"></i>
                 Due: <?php echo e($assignment->due_at?->format('d M Y, h:i A') ?? 'No due date'); ?>
 
+                <?php if(! $isSubmitted && $assignment->due_at): ?>
+                    <span class="asg-countdown"
+                          data-asg-due="<?php echo e($assignment->due_at->toIso8601String()); ?>"
+                          title="Time remaining until due date">—</span>
+                <?php endif; ?>
             </li>
         </ul>
 
         <?php if($status === 'open' || $submission): ?>
         <a href="<?php echo e(route('trainee.assignments.show', $assignment)); ?>" class="btn btn-primary w-100">
             <i class="bi bi-box-arrow-in-right me-1"></i>
-            <?php echo e($submission?->isSubmitted() ? 'View / Update' : ($submission ? 'Continue' : 'Open Assignment')); ?>
+            <?php echo e($isSubmitted ? 'View / Update' : ($submission ? 'Continue' : 'Open Assignment')); ?>
 
         </a>
         <?php elseif($status === 'scheduled'): ?>

@@ -52,7 +52,7 @@ unset($__errorArgs, $__bag); ?>
         </div>
         <div class="col-12">
             <label class="form-label">Instructions</label>
-            <textarea name="instructions" class="form-control" rows="5"><?php echo e(old('instructions', $assignment->instructions ?? '')); ?></textarea>
+            <textarea name="instructions" id="assignment_instructions" class="form-control asg-richtext" rows="8"><?php echo e(old('instructions', $assignment->instructions ?? '')); ?></textarea>
             <?php $__errorArgs = ['instructions'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -61,6 +61,7 @@ $message = $__bag->first($__errorArgs[0]); ?><div class="text-danger small"><?ph
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
+            <div class="form-text">You can use bold, underline, colors, lists, and more.</div>
         </div>
 
         <div class="col-12">
@@ -169,22 +170,36 @@ unset($__errorArgs, $__bag); ?>
                 <?php $__currentLoopData = $assignment->attachments; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $file): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <div class="border rounded p-3">
                     <div class="row g-2 align-items-end">
-                        <div class="col-md-5">
+                        <div class="col-md-4">
                             <label class="form-label small mb-1">Material name</label>
                             <input type="text" name="existing_titles[<?php echo e($file->id); ?>]" class="form-control"
                                    value="<?php echo e(old('existing_titles.'.$file->id, $file->title ?: $file->original_name)); ?>">
                         </div>
-                        <div class="col-md-5">
+                        <div class="col-md-4">
                             <label class="form-label small mb-1">File</label>
                             <div class="form-control-plaintext small">
                                 <i class="bi bi-paperclip me-1"></i><?php echo e($file->original_name); ?>
 
                             </div>
                         </div>
-                        <div class="col-md-2">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="remove_attachments[]" value="<?php echo e($file->id); ?>" id="rm_<?php echo e($file->id); ?>">
-                                <label class="form-check-label text-danger" for="rm_<?php echo e($file->id); ?>">Remove</label>
+                        <div class="col-md-4">
+                            <div class="d-flex align-items-center gap-2 flex-wrap">
+                                <button type="button"
+                                        class="btn btn-sm btn-outline-primary"
+                                        data-asg-preview
+                                        data-asg-name="<?php echo e($file->displayName()); ?>"
+                                        data-asg-kind="<?php echo e($file->previewKind()); ?>"
+                                        data-asg-view="<?php echo e(route('admin.assignments.attachments.view', [$assignment, $file])); ?>"
+                                        data-asg-download="<?php echo e(route('admin.assignments.attachments.download', [$assignment, $file])); ?>">
+                                    <i class="bi bi-eye"></i> View
+                                </button>
+                                <a href="<?php echo e(route('admin.assignments.attachments.download', [$assignment, $file])); ?>" class="btn btn-sm btn-outline-success">
+                                    <i class="bi bi-download"></i>
+                                </a>
+                                <div class="form-check mb-0">
+                                    <input class="form-check-input" type="checkbox" name="remove_attachments[]" value="<?php echo e($file->id); ?>" id="rm_<?php echo e($file->id); ?>">
+                                    <label class="form-check-label text-danger" for="rm_<?php echo e($file->id); ?>">Remove</label>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -328,4 +343,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 <?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('assignments._richtext', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+<?php echo $__env->make('assignments._file-preview-modal', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 <?php /**PATH C:\xampp\htdocs\tms_lgs\resources\views/admin/assignments/_form.blade.php ENDPATH**/ ?>

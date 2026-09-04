@@ -79,7 +79,7 @@
                             </div>
                             <div>
                                 <span class="label">Due date</span>
-                                <span class="value"><?php echo e($assignment->due_at?->format('d M Y, h:i A') ?? 'No due date'); ?></span>
+                                <?php echo $__env->make('assignments._due-countdown', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
                             </div>
                         </li>
                     </ul>
@@ -127,7 +127,7 @@
     <div class="asg-panel asg-panel-auto mb-3">
         <div class="asg-panel-head"><h2>Instructions / Detail</h2></div>
         <div class="asg-panel-body">
-            <div class="asg-prose"><?php echo e($assignment->instructions ?: 'No instructions provided.'); ?></div>
+            <div class="asg-prose"><?php echo \App\Support\HtmlContent::display($assignment->instructions, 'No instructions provided.'); ?></div>
         </div>
     </div>
 
@@ -156,8 +156,9 @@
                 <?php echo csrf_field(); ?>
                 <div class="mb-3">
                     <label class="form-label fw-semibold">Written response</label>
-                    <textarea name="written_response" class="form-control" rows="9"
+                    <textarea name="written_response" id="written_response" class="form-control asg-richtext" rows="10"
                               placeholder="Write your answer or notes here..."><?php echo e(old('written_response', $submission->written_response ?? '')); ?></textarea>
+                    <div class="form-text">You can use bold, underline, colors, lists, and more.</div>
                 </div>
 
                 <?php if($submission && $submission->files->count()): ?>
@@ -221,7 +222,7 @@ unset($__errorArgs, $__bag); ?>
             </form>
             <?php else: ?>
                 <?php if($submission): ?>
-                <div class="asg-prose mb-3"><?php echo e($submission->written_response ?: 'No written response.'); ?></div>
+                <div class="asg-prose mb-3"><?php echo \App\Support\HtmlContent::display($submission->written_response, 'No written response.'); ?></div>
                 <?php if($submission->files->count()): ?>
                 <div class="mb-3">
                     <?php $__currentLoopData = $submission->files; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $file): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
@@ -265,6 +266,8 @@ unset($__errorArgs, $__bag); ?>
 </div>
 
 <?php echo $__env->make('assignments._file-preview-modal', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+<?php echo $__env->make('assignments._richtext', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+<?php echo $__env->make('assignments._due-countdown-script', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 <?php $__env->stopSection(); ?>
 
 <?php echo $__env->make('layouts.admin', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\tms_lgs\resources\views/trainee/assignments/show.blade.php ENDPATH**/ ?>

@@ -8,6 +8,7 @@ use App\Models\AssignmentAttachment;
 use App\Models\AssignmentSubmission;
 use App\Models\AssignmentSubmissionFile;
 use App\Support\AssignmentFileStorage;
+use App\Support\HtmlContent;
 use App\Support\TraineeAssignmentData;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -52,7 +53,7 @@ class AssignmentController extends Controller
         $maxKb = AssignmentFileStorage::MAX_KB;
 
         $validated = $request->validate([
-            'written_response' => 'nullable|string|max:20000',
+            'written_response' => 'nullable|string|max:100000',
             'files' => 'nullable|array',
             'files.*' => 'file|mimes:'.$mimes.'|max:'.$maxKb,
             'remove_files' => 'nullable|array',
@@ -60,7 +61,8 @@ class AssignmentController extends Controller
             'action' => 'required|in:draft,submit',
         ]);
 
-        $hasText = trim((string) ($validated['written_response'] ?? '')) !== '';
+        $validated['written_response'] = HtmlContent::sanitize($validated['written_response'] ?? null);
+        $hasText = ! HtmlContent::isEmpty($validated['written_response']);
         $hasNewFiles = ! empty($request->file('files'));
         $keepingFiles = $existing
             ? $existing->files()->whereNotIn('id', (array) ($validated['remove_files'] ?? []))->exists()
@@ -76,7 +78,7 @@ class AssignmentController extends Controller
                 'user_id' => Auth::id(),
             ]);
 
-            $submission->written_response = $validated['written_response'] ?? null;
+            $submission->written_response = $validated['written_response'];
 
             if ($validated['action'] === 'submit') {
                 $submission->status = 'submitted';

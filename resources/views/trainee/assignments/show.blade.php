@@ -81,7 +81,7 @@
                             </div>
                             <div>
                                 <span class="label">Due date</span>
-                                <span class="value">{{ $assignment->due_at?->format('d M Y, h:i A') ?? 'No due date' }}</span>
+                                @include('assignments._due-countdown')
                             </div>
                         </li>
                     </ul>
@@ -129,7 +129,7 @@
     <div class="asg-panel asg-panel-auto mb-3">
         <div class="asg-panel-head"><h2>Instructions / Detail</h2></div>
         <div class="asg-panel-body">
-            <div class="asg-prose">{{ $assignment->instructions ?: 'No instructions provided.' }}</div>
+            <div class="asg-prose">{!! \App\Support\HtmlContent::display($assignment->instructions, 'No instructions provided.') !!}</div>
         </div>
     </div>
 
@@ -158,8 +158,9 @@
                 @csrf
                 <div class="mb-3">
                     <label class="form-label fw-semibold">Written response</label>
-                    <textarea name="written_response" class="form-control" rows="9"
+                    <textarea name="written_response" id="written_response" class="form-control asg-richtext" rows="10"
                               placeholder="Write your answer or notes here...">{{ old('written_response', $submission->written_response ?? '') }}</textarea>
+                    <div class="form-text">You can use bold, underline, colors, lists, and more.</div>
                 </div>
 
                 @if($submission && $submission->files->count())
@@ -216,7 +217,7 @@
             </form>
             @else
                 @if($submission)
-                <div class="asg-prose mb-3">{{ $submission->written_response ?: 'No written response.' }}</div>
+                <div class="asg-prose mb-3">{!! \App\Support\HtmlContent::display($submission->written_response, 'No written response.') !!}</div>
                 @if($submission->files->count())
                 <div class="mb-3">
                     @foreach($submission->files as $file)
@@ -260,4 +261,6 @@
 </div>
 
 @include('assignments._file-preview-modal')
+@include('assignments._richtext')
+@include('assignments._due-countdown-script')
 @endsection

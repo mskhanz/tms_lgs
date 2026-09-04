@@ -24,8 +24,9 @@
         </div>
         <div class="col-12">
             <label class="form-label">Instructions</label>
-            <textarea name="instructions" class="form-control" rows="5">{{ old('instructions', $assignment->instructions ?? '') }}</textarea>
+            <textarea name="instructions" id="assignment_instructions" class="form-control asg-richtext" rows="8">{{ old('instructions', $assignment->instructions ?? '') }}</textarea>
             @error('instructions')<div class="text-danger small">{{ $message }}</div>@enderror
+            <div class="form-text">You can use bold, underline, colors, lists, and more.</div>
         </div>
 
         <div class="col-12">
@@ -97,21 +98,35 @@
                 @foreach($assignment->attachments as $file)
                 <div class="border rounded p-3">
                     <div class="row g-2 align-items-end">
-                        <div class="col-md-5">
+                        <div class="col-md-4">
                             <label class="form-label small mb-1">Material name</label>
                             <input type="text" name="existing_titles[{{ $file->id }}]" class="form-control"
                                    value="{{ old('existing_titles.'.$file->id, $file->title ?: $file->original_name) }}">
                         </div>
-                        <div class="col-md-5">
+                        <div class="col-md-4">
                             <label class="form-label small mb-1">File</label>
                             <div class="form-control-plaintext small">
                                 <i class="bi bi-paperclip me-1"></i>{{ $file->original_name }}
                             </div>
                         </div>
-                        <div class="col-md-2">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="remove_attachments[]" value="{{ $file->id }}" id="rm_{{ $file->id }}">
-                                <label class="form-check-label text-danger" for="rm_{{ $file->id }}">Remove</label>
+                        <div class="col-md-4">
+                            <div class="d-flex align-items-center gap-2 flex-wrap">
+                                <button type="button"
+                                        class="btn btn-sm btn-outline-primary"
+                                        data-asg-preview
+                                        data-asg-name="{{ $file->displayName() }}"
+                                        data-asg-kind="{{ $file->previewKind() }}"
+                                        data-asg-view="{{ route('admin.assignments.attachments.view', [$assignment, $file]) }}"
+                                        data-asg-download="{{ route('admin.assignments.attachments.download', [$assignment, $file]) }}">
+                                    <i class="bi bi-eye"></i> View
+                                </button>
+                                <a href="{{ route('admin.assignments.attachments.download', [$assignment, $file]) }}" class="btn btn-sm btn-outline-success">
+                                    <i class="bi bi-download"></i>
+                                </a>
+                                <div class="form-check mb-0">
+                                    <input class="form-check-input" type="checkbox" name="remove_attachments[]" value="{{ $file->id }}" id="rm_{{ $file->id }}">
+                                    <label class="form-check-label text-danger" for="rm_{{ $file->id }}">Remove</label>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -240,3 +255,6 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 @endpush
+
+@include('assignments._richtext')
+@include('assignments._file-preview-modal')

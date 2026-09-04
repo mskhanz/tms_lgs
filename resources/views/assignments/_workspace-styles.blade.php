@@ -208,12 +208,17 @@
         flex: 1;
     }
     .asg-prose {
-        white-space: pre-wrap;
         color: #1e293b;
         line-height: 1.65;
         font-size: 0.95rem;
         margin: 0;
+        overflow-wrap: anywhere;
     }
+    .asg-prose p { margin: 0 0 0.75rem; }
+    .asg-prose p:last-child { margin-bottom: 0; }
+    .asg-prose ul, .asg-prose ol { margin: 0 0 0.75rem; padding-left: 1.25rem; }
+    .asg-prose h2, .asg-prose h3, .asg-prose h4 { margin: 0 0 0.5rem; color: #0f172a; }
+    .asg-prose a { color: #047857; }
     .asg-meta-list {
         list-style: none;
         padding: 0;
@@ -244,17 +249,39 @@
         display: block;
     }
     .asg-meta-list-left .asg-meta-pair {
-        flex-direction: row;
-        align-items: flex-start;
-        gap: 1.5rem;
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        flex-wrap: wrap;
+        gap: 1.5rem !important;
         width: 100%;
     }
     .asg-meta-list-left .asg-meta-pair > div {
-        flex: 1;
+        flex: 0 1 auto;
         min-width: 0;
-        display: flex;
-        flex-direction: column;
-        gap: 0.2rem;
+        display: inline-flex;
+        flex-direction: row;
+        align-items: baseline;
+        gap: 0.4rem;
+    }
+    .asg-meta-list-left .asg-meta-pair .label,
+    .asg-meta-list-left .asg-meta-pair .value {
+        width: auto;
+        display: inline;
+    }
+    .asg-meta-list-left .asg-meta-pair .label::after {
+        content: ':';
+    }
+    .asg-countdown {
+        display: inline-block;
+        margin-left: 0.45rem;
+        color: #dc2626;
+        font-weight: 700;
+        font-size: 0.86rem;
+        white-space: nowrap;
+    }
+    .asg-countdown.asg-countdown-overdue {
+        color: #991b1b;
     }
     .asg-file {
         display: flex;
@@ -318,11 +345,37 @@
         text-align: center;
         padding: 1rem 0.5rem;
     }
+    .asg-table thead th {
+        background: #f8fafc;
+        font-size: 0.78rem;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        color: #64748b;
+        border-bottom-color: #eef2f6;
+        padding: 0.75rem 1rem;
+        white-space: nowrap;
+    }
+    .asg-table tbody td {
+        padding: 0.75rem 1rem;
+        vertical-align: middle;
+        border-color: #f1f5f9;
+    }
+    .asg-panel-body.p-0 { padding: 0 !important; }
     .asg-file-actions {
         display: flex;
         align-items: center;
         gap: 0.35rem;
         flex-shrink: 0;
+    }
+    .asg-file-actions.asg-file-actions-stack {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.3rem;
+    }
+    .asg-file-actions.asg-file-actions-stack .btn {
+        min-width: 2rem;
+        padding-left: 0.45rem;
+        padding-right: 0.45rem;
     }
     .asg-preview-frame {
         width: 100%;

@@ -14,6 +14,7 @@ use App\Models\TrainingProgram;
 use App\Models\User;
 use App\Support\AssignmentFileStorage;
 use App\Support\AsyncMail;
+use App\Support\HtmlContent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -327,6 +328,8 @@ class AssignmentController extends Controller
 
     private function normalizeAssignment(array $validated): array
     {
+        $validated['instructions'] = HtmlContent::sanitize($validated['instructions'] ?? null);
+
         if (($validated['assign_to'] ?? null) === 'program') {
             $validated['training_batch_id'] = null;
         }

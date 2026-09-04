@@ -108,7 +108,7 @@
     <div class="asg-panel asg-panel-auto mb-3">
         <div class="asg-panel-head"><h2>Written response</h2></div>
         <div class="asg-panel-body">
-            <div class="asg-prose"><?php echo e($submission->written_response ?: 'No written response provided.'); ?></div>
+            <div class="asg-prose"><?php echo \App\Support\HtmlContent::display($submission->written_response, 'No written response provided.'); ?></div>
         </div>
     </div>
 

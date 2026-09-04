@@ -338,6 +338,15 @@
             justify-content: center;
         }
     }
+
+    .asg-countdown {
+        display: inline-block;
+        margin-left: 0.35rem;
+        color: #dc2626;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+    .asg-countdown.asg-countdown-overdue { color: #991b1b; }
 </style>
 @endpush
 
@@ -770,4 +779,5 @@
         @endif
     </div>
 </div>
+@include('assignments._due-countdown-script')
 @endsection

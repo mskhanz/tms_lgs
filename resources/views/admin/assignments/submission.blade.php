@@ -98,7 +98,7 @@
                             </div>
                             <div>
                                 <span class="label">Due date</span>
-                                <span class="value">{{ $assignment->due_at?->format('d M Y, h:i A') ?? 'No due date' }}</span>
+                                @include('assignments._due-countdown')
                             </div>
                         </li>
                     </ul>
@@ -110,7 +110,7 @@
     <div class="asg-panel asg-panel-auto mb-3">
         <div class="asg-panel-head"><h2>Written response</h2></div>
         <div class="asg-panel-body">
-            <div class="asg-prose">{{ $submission->written_response ?: 'No written response provided.' }}</div>
+            <div class="asg-prose">{!! \App\Support\HtmlContent::display($submission->written_response, 'No written response provided.') !!}</div>
         </div>
     </div>
 
@@ -172,4 +172,5 @@
 </div>
 
 @include('assignments._file-preview-modal')
+@include('assignments._due-countdown-script')
 @endsection

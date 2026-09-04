@@ -1,5 +1,18 @@
 <?php $__env->startSection('title', 'My Assignments'); ?>
 
+<?php $__env->startPush('styles'); ?>
+<style>
+    .asg-countdown {
+        display: inline-block;
+        margin-left: 0.35rem;
+        color: #dc2626;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+    .asg-countdown.asg-countdown-overdue { color: #991b1b; }
+</style>
+<?php $__env->stopPush(); ?>
+
 <?php $__env->startSection('content'); ?>
 <?php
     $assignments = $assignments ?? collect();
@@ -45,6 +58,8 @@
     </div>
     <?php endif; ?>
 </div>
+
+<?php echo $__env->make('assignments._due-countdown-script', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 <?php $__env->stopSection(); ?>
 
 <?php echo $__env->make('layouts.admin', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\tms_lgs\resources\views/trainee/assignments/index.blade.php ENDPATH**/ ?>
