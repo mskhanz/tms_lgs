@@ -31,7 +31,7 @@ class QuizController extends Controller
     {
         $user = Auth::user();
 
-        if (! $quiz->isAvailable() || $quiz->questions()->count() === 0) {
+        if (! $quiz->isAvailable() || $quiz->activeQuestions()->count() === 0) {
             return redirect()->route('trainee.quizzes.index')
                 ->with('error', 'This quiz is not available.');
         }
@@ -258,7 +258,7 @@ class QuizController extends Controller
 
     private function createShuffledAttempt(Quiz $quiz, int $userId): QuizAttempt
     {
-        $questionIds = $quiz->questions()->orderBy('sort_order')->pluck('id')->toArray();
+        $questionIds = $quiz->activeQuestions()->orderBy('sort_order')->pluck('id')->toArray();
 
         if ($quiz->shuffle_questions) {
             shuffle($questionIds);

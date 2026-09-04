@@ -31,6 +31,11 @@ class Quiz extends Model
         return $this->hasMany(QuizQuestion::class)->orderBy('sort_order');
     }
 
+    public function activeQuestions()
+    {
+        return $this->questions()->active();
+    }
+
     public function attempts()
     {
         return $this->hasMany(QuizAttempt::class);
@@ -168,7 +173,9 @@ class Quiz extends Model
             return 'inactive';
         }
 
-        $questionCount = $this->questions_count ?? $this->questions()->count();
+        $questionCount = $this->questions_count
+            ?? $this->active_questions_count
+            ?? $this->activeQuestions()->count();
 
         if ($questionCount < 1) {
             return 'no_questions';
@@ -200,11 +207,11 @@ class Quiz extends Model
     {
         return $query
             ->where('is_active', true)
-            ->has('questions');
+            ->has('activeQuestions');
     }
 
     public function totalMarks(): int
     {
-        return (int) $this->questions()->sum('marks');
+        return (int) $this->activeQuestions()->sum('marks');
     }
 }

@@ -37,7 +37,7 @@ class TraineeQuizData
                 throw new \RuntimeException('Quiz tables are missing. Run: php artisan migrate --force');
             }
 
-            $availableQuizzes = Quiz::withCount('questions')
+            $availableQuizzes = Quiz::withCount(['activeQuestions as questions_count'])
                 ->with(['trainingProgram', 'trainingBatch.trainingProgram'])
                 ->activeForTrainees();
 

@@ -134,6 +134,11 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('/quizzes/{quiz}/results/pdf', [QuizController::class, 'downloadResultsPdf'])->name('quizzes.results.pdf');
     Route::post('/quizzes/{quiz}/toggle-status', [QuizController::class, 'toggleStatus'])->name('quizzes.toggle-status');
     Route::post('/quizzes/{quiz}/questions', [QuizController::class, 'storeQuestion'])->name('quizzes.questions.store');
+    Route::get('/quizzes/questions/template', [QuizController::class, 'downloadQuestionTemplate'])->name('quizzes.questions.template');
+    Route::post('/quizzes/{quiz}/questions/import', [QuizController::class, 'importQuestions'])->name('quizzes.questions.import');
+    Route::post('/quizzes/{quiz}/questions/{question}/toggle-status', [QuizController::class, 'toggleQuestionStatus'])->name('quizzes.questions.toggle-status');
+    Route::get('/quizzes/{quiz}/questions/{question}/edit', [QuizController::class, 'editQuestion'])->name('quizzes.questions.edit');
+    Route::put('/quizzes/{quiz}/questions/{question}', [QuizController::class, 'updateQuestion'])->name('quizzes.questions.update');
     Route::delete('/quizzes/{quiz}/questions/{question}', [QuizController::class, 'destroyQuestion'])->name('quizzes.questions.destroy');
 
     // Registration training options (for trainee signup)
