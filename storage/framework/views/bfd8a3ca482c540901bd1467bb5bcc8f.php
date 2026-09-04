@@ -74,7 +74,7 @@
                         </div>
                         <ul class="asg-meta-list asg-meta-list-left">
                             <li><span class="label">Name</span><span class="value"><?php echo e($traineeName); ?></span></li>
-                            <li><span class="label">CNIC</span><span class="value"><?php echo e($profile->cnic_no ?? '—'); ?></span></li>
+                            <li><span class="label">Contact no</span><span class="value"><?php echo e($profile->contact_no ?? '—'); ?></span></li>
                             <li><span class="label">Email</span><span class="value"><?php echo e($trainee->email); ?></span></li>
                             <li><span class="label">Organization</span><span class="value"><?php echo e($profile?->organization?->name ?? '—'); ?></span></li>
                         </ul>
@@ -112,56 +112,64 @@
         </div>
     </div>
 
-    <div class="row g-3">
-        <div class="col-lg-6">
-            <div class="asg-panel">
-                <div class="asg-panel-head"><h2>Uploaded documents</h2></div>
-                <div class="asg-panel-body">
-                    <?php $__empty_1 = true; $__currentLoopData = $submission->files; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $file): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
-                    <div class="asg-file">
-                        <div class="d-flex align-items-center gap-2" style="min-width:0;">
-                            <div class="asg-file-icon"><i class="bi bi-file-earmark"></i></div>
-                            <div style="min-width:0;">
-                                <div class="asg-file-name"><?php echo e($file->original_name); ?></div>
-                            </div>
-                        </div>
-                        <a href="<?php echo e(route('admin.assignments.files.download', [$assignment, $file])); ?>" class="btn btn-sm btn-outline-success flex-shrink-0">
-                            <i class="bi bi-download"></i>
-                        </a>
+    <div class="asg-panel asg-panel-auto mb-3">
+        <div class="asg-panel-head"><h2>Uploaded documents</h2></div>
+        <div class="asg-panel-body">
+            <?php $__empty_1 = true; $__currentLoopData = $submission->files; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $file): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+            <div class="asg-file">
+                <div class="d-flex align-items-center gap-2" style="min-width:0;">
+                    <div class="asg-file-icon"><i class="bi bi-file-earmark"></i></div>
+                    <div style="min-width:0;">
+                        <div class="asg-file-name"><?php echo e($file->original_name); ?></div>
                     </div>
-                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
-                    <p class="asg-empty">No documents uploaded.</p>
-                    <?php endif; ?>
+                </div>
+                <div class="asg-file-actions">
+                    <button type="button"
+                            class="btn btn-sm btn-outline-primary"
+                            data-asg-preview
+                            data-asg-name="<?php echo e($file->original_name); ?>"
+                            data-asg-kind="<?php echo e($file->previewKind()); ?>"
+                            data-asg-view="<?php echo e(route('admin.assignments.files.view', [$assignment, $file])); ?>"
+                            data-asg-download="<?php echo e(route('admin.assignments.files.download', [$assignment, $file])); ?>">
+                        <i class="bi bi-eye"></i> View
+                    </button>
+                    <a href="<?php echo e(route('admin.assignments.files.download', [$assignment, $file])); ?>" class="btn btn-sm btn-outline-success">
+                        <i class="bi bi-download"></i> Download
+                    </a>
                 </div>
             </div>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+            <p class="asg-empty">No documents uploaded.</p>
+            <?php endif; ?>
         </div>
-        <div class="col-lg-6">
-            <div class="asg-panel">
-                <div class="asg-panel-head"><h2>Marks &amp; feedback</h2></div>
-                <div class="asg-panel-body">
-                    <form method="POST" action="<?php echo e(route('admin.assignments.submissions.feedback', [$assignment, $submission])); ?>">
-                        <?php echo csrf_field(); ?>
-                        <div class="mb-3">
-                            <label class="form-label">Marks (out of <?php echo e(number_format((float) $assignment->total_marks, 0)); ?>)</label>
-                            <input type="number" step="0.01" name="marks" class="form-control"
-                                   value="<?php echo e(old('marks', $submission->marks)); ?>"
-                                   min="0" max="<?php echo e((float) $assignment->total_marks); ?>"
-                                   placeholder="Enter marks">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Feedback</label>
-                            <textarea name="admin_feedback" class="form-control" rows="5"
-                                      placeholder="Write feedback for the trainee..."><?php echo e(old('admin_feedback', $submission->admin_feedback)); ?></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-success">
-                            <i class="bi bi-check-circle me-1"></i>Save feedback
-                        </button>
-                    </form>
+    </div>
+
+    <div class="asg-panel asg-panel-auto">
+        <div class="asg-panel-head"><h2>Marks &amp; feedback</h2></div>
+        <div class="asg-panel-body">
+            <form method="POST" action="<?php echo e(route('admin.assignments.submissions.feedback', [$assignment, $submission])); ?>">
+                <?php echo csrf_field(); ?>
+                <div class="mb-3">
+                    <label class="form-label">Marks (out of <?php echo e(number_format((float) $assignment->total_marks, 0)); ?>)</label>
+                    <input type="number" step="0.01" name="marks" class="form-control"
+                           value="<?php echo e(old('marks', $submission->marks)); ?>"
+                           min="0" max="<?php echo e((float) $assignment->total_marks); ?>"
+                           placeholder="Enter marks">
                 </div>
-            </div>
+                <div class="mb-3">
+                    <label class="form-label">Feedback</label>
+                    <textarea name="admin_feedback" class="form-control" rows="5"
+                              placeholder="Write feedback for the trainee..."><?php echo e(old('admin_feedback', $submission->admin_feedback)); ?></textarea>
+                </div>
+                <button type="submit" class="btn btn-success">
+                    <i class="bi bi-check-circle me-1"></i>Save feedback
+                </button>
+            </form>
         </div>
     </div>
 </div>
+
+<?php echo $__env->make('assignments._file-preview-modal', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 <?php $__env->stopSection(); ?>
 
 <?php echo $__env->make('layouts.admin', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\tms_lgs\resources\views/admin/assignments/submission.blade.php ENDPATH**/ ?>

@@ -114,54 +114,62 @@
         </div>
     </div>
 
-    <div class="row g-3">
-        <div class="col-lg-6">
-            <div class="asg-panel">
-                <div class="asg-panel-head"><h2>Uploaded documents</h2></div>
-                <div class="asg-panel-body">
-                    @forelse($submission->files as $file)
-                    <div class="asg-file">
-                        <div class="d-flex align-items-center gap-2" style="min-width:0;">
-                            <div class="asg-file-icon"><i class="bi bi-file-earmark"></i></div>
-                            <div style="min-width:0;">
-                                <div class="asg-file-name">{{ $file->original_name }}</div>
-                            </div>
-                        </div>
-                        <a href="{{ route('admin.assignments.files.download', [$assignment, $file]) }}" class="btn btn-sm btn-outline-success flex-shrink-0">
-                            <i class="bi bi-download"></i>
-                        </a>
+    <div class="asg-panel asg-panel-auto mb-3">
+        <div class="asg-panel-head"><h2>Uploaded documents</h2></div>
+        <div class="asg-panel-body">
+            @forelse($submission->files as $file)
+            <div class="asg-file">
+                <div class="d-flex align-items-center gap-2" style="min-width:0;">
+                    <div class="asg-file-icon"><i class="bi bi-file-earmark"></i></div>
+                    <div style="min-width:0;">
+                        <div class="asg-file-name">{{ $file->original_name }}</div>
                     </div>
-                    @empty
-                    <p class="asg-empty">No documents uploaded.</p>
-                    @endforelse
+                </div>
+                <div class="asg-file-actions">
+                    <button type="button"
+                            class="btn btn-sm btn-outline-primary"
+                            data-asg-preview
+                            data-asg-name="{{ $file->original_name }}"
+                            data-asg-kind="{{ $file->previewKind() }}"
+                            data-asg-view="{{ route('admin.assignments.files.view', [$assignment, $file]) }}"
+                            data-asg-download="{{ route('admin.assignments.files.download', [$assignment, $file]) }}">
+                        <i class="bi bi-eye"></i> View
+                    </button>
+                    <a href="{{ route('admin.assignments.files.download', [$assignment, $file]) }}" class="btn btn-sm btn-outline-success">
+                        <i class="bi bi-download"></i> Download
+                    </a>
                 </div>
             </div>
+            @empty
+            <p class="asg-empty">No documents uploaded.</p>
+            @endforelse
         </div>
-        <div class="col-lg-6">
-            <div class="asg-panel">
-                <div class="asg-panel-head"><h2>Marks &amp; feedback</h2></div>
-                <div class="asg-panel-body">
-                    <form method="POST" action="{{ route('admin.assignments.submissions.feedback', [$assignment, $submission]) }}">
-                        @csrf
-                        <div class="mb-3">
-                            <label class="form-label">Marks (out of {{ number_format((float) $assignment->total_marks, 0) }})</label>
-                            <input type="number" step="0.01" name="marks" class="form-control"
-                                   value="{{ old('marks', $submission->marks) }}"
-                                   min="0" max="{{ (float) $assignment->total_marks }}"
-                                   placeholder="Enter marks">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Feedback</label>
-                            <textarea name="admin_feedback" class="form-control" rows="5"
-                                      placeholder="Write feedback for the trainee...">{{ old('admin_feedback', $submission->admin_feedback) }}</textarea>
-                        </div>
-                        <button type="submit" class="btn btn-success">
-                            <i class="bi bi-check-circle me-1"></i>Save feedback
-                        </button>
-                    </form>
+    </div>
+
+    <div class="asg-panel asg-panel-auto">
+        <div class="asg-panel-head"><h2>Marks &amp; feedback</h2></div>
+        <div class="asg-panel-body">
+            <form method="POST" action="{{ route('admin.assignments.submissions.feedback', [$assignment, $submission]) }}">
+                @csrf
+                <div class="mb-3">
+                    <label class="form-label">Marks (out of {{ number_format((float) $assignment->total_marks, 0) }})</label>
+                    <input type="number" step="0.01" name="marks" class="form-control"
+                           value="{{ old('marks', $submission->marks) }}"
+                           min="0" max="{{ (float) $assignment->total_marks }}"
+                           placeholder="Enter marks">
                 </div>
-            </div>
+                <div class="mb-3">
+                    <label class="form-label">Feedback</label>
+                    <textarea name="admin_feedback" class="form-control" rows="5"
+                              placeholder="Write feedback for the trainee...">{{ old('admin_feedback', $submission->admin_feedback) }}</textarea>
+                </div>
+                <button type="submit" class="btn btn-success">
+                    <i class="bi bi-check-circle me-1"></i>Save feedback
+                </button>
+            </form>
         </div>
     </div>
 </div>
+
+@include('assignments._file-preview-modal')
 @endsection

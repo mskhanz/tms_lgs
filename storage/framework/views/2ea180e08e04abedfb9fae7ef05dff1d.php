@@ -101,9 +101,20 @@
                                 <?php endif; ?>
                             </div>
                         </div>
-                        <a href="<?php echo e(route('trainee.assignments.attachments.download', [$assignment, $file])); ?>" class="btn btn-sm btn-outline-success flex-shrink-0">
-                            <i class="bi bi-download"></i>
-                        </a>
+                        <div class="asg-file-actions">
+                            <button type="button"
+                                    class="btn btn-sm btn-outline-primary"
+                                    data-asg-preview
+                                    data-asg-name="<?php echo e($file->displayName()); ?>"
+                                    data-asg-kind="<?php echo e($file->previewKind()); ?>"
+                                    data-asg-view="<?php echo e(route('trainee.assignments.attachments.view', [$assignment, $file])); ?>"
+                                    data-asg-download="<?php echo e(route('trainee.assignments.attachments.download', [$assignment, $file])); ?>">
+                                <i class="bi bi-eye"></i> View
+                            </button>
+                            <a href="<?php echo e(route('trainee.assignments.attachments.download', [$assignment, $file])); ?>" class="btn btn-sm btn-outline-success">
+                                <i class="bi bi-download"></i>
+                            </a>
+                        </div>
                     </div>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                     <p class="asg-empty">No materials attached.</p>
@@ -157,15 +168,26 @@
                         <div class="d-flex align-items-center gap-2" style="min-width:0;">
                             <div class="asg-file-icon"><i class="bi bi-file-earmark"></i></div>
                             <div style="min-width:0;">
-                                <a class="asg-file-name text-decoration-none" href="<?php echo e(route('trainee.assignments.files.download', [$assignment, $file])); ?>">
-                                    <?php echo e($file->original_name); ?>
-
-                                </a>
+                                <div class="asg-file-name"><?php echo e($file->original_name); ?></div>
                             </div>
                         </div>
-                        <div class="form-check mb-0 flex-shrink-0">
-                            <input class="form-check-input" type="checkbox" name="remove_files[]" value="<?php echo e($file->id); ?>" id="rmf_<?php echo e($file->id); ?>">
-                            <label class="form-check-label text-danger small" for="rmf_<?php echo e($file->id); ?>">Remove</label>
+                        <div class="asg-file-actions">
+                            <button type="button"
+                                    class="btn btn-sm btn-outline-primary"
+                                    data-asg-preview
+                                    data-asg-name="<?php echo e($file->original_name); ?>"
+                                    data-asg-kind="<?php echo e($file->previewKind()); ?>"
+                                    data-asg-view="<?php echo e(route('trainee.assignments.files.view', [$assignment, $file])); ?>"
+                                    data-asg-download="<?php echo e(route('trainee.assignments.files.download', [$assignment, $file])); ?>">
+                                <i class="bi bi-eye"></i> View
+                            </button>
+                            <a href="<?php echo e(route('trainee.assignments.files.download', [$assignment, $file])); ?>" class="btn btn-sm btn-outline-success">
+                                <i class="bi bi-download"></i>
+                            </a>
+                            <div class="form-check mb-0">
+                                <input class="form-check-input" type="checkbox" name="remove_files[]" value="<?php echo e($file->id); ?>" id="rmf_<?php echo e($file->id); ?>">
+                                <label class="form-check-label text-danger small" for="rmf_<?php echo e($file->id); ?>">Remove</label>
+                            </div>
                         </div>
                     </div>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -208,9 +230,20 @@ unset($__errorArgs, $__bag); ?>
                             <div class="asg-file-icon"><i class="bi bi-file-earmark"></i></div>
                             <div class="asg-file-name"><?php echo e($file->original_name); ?></div>
                         </div>
-                        <a href="<?php echo e(route('trainee.assignments.files.download', [$assignment, $file])); ?>" class="btn btn-sm btn-outline-success">
-                            <i class="bi bi-download"></i>
-                        </a>
+                        <div class="asg-file-actions">
+                            <button type="button"
+                                    class="btn btn-sm btn-outline-primary"
+                                    data-asg-preview
+                                    data-asg-name="<?php echo e($file->original_name); ?>"
+                                    data-asg-kind="<?php echo e($file->previewKind()); ?>"
+                                    data-asg-view="<?php echo e(route('trainee.assignments.files.view', [$assignment, $file])); ?>"
+                                    data-asg-download="<?php echo e(route('trainee.assignments.files.download', [$assignment, $file])); ?>">
+                                <i class="bi bi-eye"></i> View
+                            </button>
+                            <a href="<?php echo e(route('trainee.assignments.files.download', [$assignment, $file])); ?>" class="btn btn-sm btn-outline-success">
+                                <i class="bi bi-download"></i> Download
+                            </a>
+                        </div>
                     </div>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </div>
@@ -230,6 +263,8 @@ unset($__errorArgs, $__bag); ?>
         </div>
     </div>
 </div>
+
+<?php echo $__env->make('assignments._file-preview-modal', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 <?php $__env->stopSection(); ?>
 
 <?php echo $__env->make('layouts.admin', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\tms_lgs\resources\views/trainee/assignments/show.blade.php ENDPATH**/ ?>

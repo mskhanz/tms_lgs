@@ -182,6 +182,19 @@ class AssignmentController extends Controller
         return response()->download($attachment->absolutePath(), $attachment->original_name);
     }
 
+    public function viewAttachment(Assignment $assignment, AssignmentAttachment $attachment)
+    {
+        abort_unless($attachment->assignment_id === $assignment->id, 404);
+        abort_unless($attachment->existsOnDisk(), 404);
+
+        $mime = $attachment->mime_type ?: 'application/octet-stream';
+
+        return response()->file($attachment->absolutePath(), [
+            'Content-Type' => $mime,
+            'Content-Disposition' => 'inline; filename="'.$attachment->original_name.'"',
+        ]);
+    }
+
     public function downloadSubmissionFile(Assignment $assignment, AssignmentSubmissionFile $file)
     {
         $submission = $file->submission;
@@ -189,6 +202,20 @@ class AssignmentController extends Controller
         abort_unless($file->existsOnDisk(), 404);
 
         return response()->download($file->absolutePath(), $file->original_name);
+    }
+
+    public function viewSubmissionFile(Assignment $assignment, AssignmentSubmissionFile $file)
+    {
+        $submission = $file->submission;
+        abort_unless($submission && $submission->assignment_id === $assignment->id, 404);
+        abort_unless($file->existsOnDisk(), 404);
+
+        $mime = $file->mime_type ?: 'application/octet-stream';
+
+        return response()->file($file->absolutePath(), [
+            'Content-Type' => $mime,
+            'Content-Disposition' => 'inline; filename="'.$file->original_name.'"',
+        ]);
     }
 
     public function showSubmission(Assignment $assignment, AssignmentSubmission $submission)

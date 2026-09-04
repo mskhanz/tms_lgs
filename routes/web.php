@@ -96,7 +96,9 @@ Route::middleware(['auth'])->prefix('trainee')->name('trainee.')->group(function
     Route::get('/assignments/{assignment}', [TraineeAssignmentController::class, 'show'])->name('assignments.show');
     Route::post('/assignments/{assignment}/submit', [TraineeAssignmentController::class, 'submit'])->name('assignments.submit');
     Route::get('/assignments/{assignment}/attachments/{attachment}/download', [TraineeAssignmentController::class, 'downloadAttachment'])->name('assignments.attachments.download');
+    Route::get('/assignments/{assignment}/attachments/{attachment}/view', [TraineeAssignmentController::class, 'viewAttachment'])->name('assignments.attachments.view');
     Route::get('/assignments/{assignment}/files/{file}/download', [TraineeAssignmentController::class, 'downloadSubmissionFile'])->name('assignments.files.download');
+    Route::get('/assignments/{assignment}/files/{file}/view', [TraineeAssignmentController::class, 'viewSubmissionFile'])->name('assignments.files.view');
 });
 
 // Admin routes (System Admin, Director, Deputy Director, Training Officer) - email verification disabled
@@ -152,7 +154,9 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::resource('assignments', AssignmentController::class);
     Route::post('/assignments/{assignment}/toggle-status', [AssignmentController::class, 'toggleStatus'])->name('assignments.toggle-status');
     Route::get('/assignments/{assignment}/attachments/{attachment}/download', [AssignmentController::class, 'downloadAttachment'])->name('assignments.attachments.download');
+    Route::get('/assignments/{assignment}/attachments/{attachment}/view', [AssignmentController::class, 'viewAttachment'])->name('assignments.attachments.view');
     Route::get('/assignments/{assignment}/files/{file}/download', [AssignmentController::class, 'downloadSubmissionFile'])->name('assignments.files.download');
+    Route::get('/assignments/{assignment}/files/{file}/view', [AssignmentController::class, 'viewSubmissionFile'])->name('assignments.files.view');
     Route::get('/assignments/{assignment}/submissions/{submission}', [AssignmentController::class, 'showSubmission'])->name('assignments.submissions.show');
     Route::post('/assignments/{assignment}/submissions/{submission}/feedback', [AssignmentController::class, 'updateSubmissionFeedback'])->name('assignments.submissions.feedback');
 

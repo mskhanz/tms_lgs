@@ -318,6 +318,31 @@
         text-align: center;
         padding: 1rem 0.5rem;
     }
+    .asg-file-actions {
+        display: flex;
+        align-items: center;
+        gap: 0.35rem;
+        flex-shrink: 0;
+    }
+    .asg-preview-frame {
+        width: 100%;
+        height: min(78vh, 820px);
+        border: 0;
+        background: #f8fafc;
+    }
+    .asg-preview-image {
+        display: block;
+        max-width: 100%;
+        max-height: min(78vh, 820px);
+        margin: 0 auto;
+        padding: 1rem;
+        object-fit: contain;
+    }
+    .asg-preview-unavailable {
+        text-align: center;
+        color: #64748b;
+        padding: 3rem 1.5rem;
+    }
     @media (max-width: 992px) {
         .asg-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }

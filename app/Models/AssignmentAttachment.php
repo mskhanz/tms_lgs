@@ -32,4 +32,41 @@ class AssignmentAttachment extends Model
     {
         return is_file($this->absolutePath());
     }
+
+    public function extension(): string
+    {
+        return strtolower(pathinfo($this->original_name, PATHINFO_EXTENSION) ?: '');
+    }
+
+    public function isImage(): bool
+    {
+        $mime = (string) $this->mime_type;
+        if (str_starts_with($mime, 'image/')) {
+            return true;
+        }
+
+        return in_array($this->extension(), ['jpg', 'jpeg', 'png', 'webp'], true);
+    }
+
+    public function isPdf(): bool
+    {
+        return $this->mime_type === 'application/pdf' || $this->extension() === 'pdf';
+    }
+
+    public function isPreviewable(): bool
+    {
+        return $this->isImage() || $this->isPdf();
+    }
+
+    public function previewKind(): string
+    {
+        if ($this->isImage()) {
+            return 'image';
+        }
+        if ($this->isPdf()) {
+            return 'pdf';
+        }
+
+        return 'other';
+    }
 }
