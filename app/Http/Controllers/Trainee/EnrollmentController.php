@@ -13,10 +13,12 @@ class EnrollmentController extends Controller
         $user = Auth::user();
         $status = $request->query('status');
 
-        $allowedStatuses = ['enrolled', 'in_progress', 'completed', 'dropped', 'failed'];
-        if ($status && ! in_array($status, $allowedStatuses, true)) {
-            $status = null;
-        }
+        // URL "ongoing" = active enrollments (enrolled + in_progress).
+        $filter = match ($status) {
+            'ongoing', 'in_progress' => 'ongoing',
+            'enrolled', 'completed', 'dropped', 'failed' => $status,
+            default => null,
+        };
 
         $query = $user->enrollments()
             ->with([
@@ -25,19 +27,25 @@ class EnrollmentController extends Controller
             ])
             ->latest('enrollment_date');
 
-        if ($status) {
-            $query->where('status', $status);
+        if ($filter === 'ongoing') {
+            $query->ongoing();
+        } elseif ($filter) {
+            $query->where('status', $filter);
         }
 
         $enrollments = $query->get();
 
         $counts = [
             'all' => $user->enrollments()->count(),
-            'in_progress' => $user->enrollments()->where('status', 'in_progress')->count(),
+            'ongoing' => $user->enrollments()->ongoing()->count(),
             'enrolled' => $user->enrollments()->where('status', 'enrolled')->count(),
             'completed' => $user->enrollments()->where('status', 'completed')->count(),
         ];
 
-        return view('trainee.enrollments.index', compact('enrollments', 'status', 'counts'));
+        return view('trainee.enrollments.index', [
+            'enrollments' => $enrollments,
+            'status' => $filter,
+            'counts' => $counts,
+        ]);
     }
 }

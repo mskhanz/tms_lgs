@@ -453,7 +453,7 @@
 
     <div class="trainee-kpi-grid">
         <?php if($ongoingEnrollments > 0): ?>
-        <a href="<?php echo e(route('trainee.enrollments.index', ['status' => 'in_progress'])); ?>" class="trainee-kpi-card">
+        <a href="<?php echo e(route('trainee.enrollments.index', ['status' => 'ongoing'])); ?>" class="trainee-kpi-card">
             <div class="trainee-kpi-icon blue"><i class="bi bi-play-circle"></i></div>
             <div>
                 <span class="trainee-kpi-value"><?php echo e(number_format($ongoingEnrollments)); ?></span>
@@ -578,22 +578,22 @@
                 </div>
                 <div class="trainee-panel-body">
                     <div class="dashboard-mini-stats mb-3">
-                        <div class="dashboard-mini-stat">
+                        <a href="<?php echo e(route('trainee.enrollments.index', ['status' => 'ongoing'])); ?>" class="dashboard-mini-stat text-decoration-none">
                             <strong class="text-primary"><?php echo e(number_format($ongoingEnrollments)); ?></strong>
-                            <span>In progress</span>
-                        </div>
-                        <div class="dashboard-mini-stat">
+                            <span>Ongoing</span>
+                        </a>
+                        <a href="<?php echo e(route('trainee.enrollments.index', ['status' => 'completed'])); ?>" class="dashboard-mini-stat text-decoration-none">
                             <strong class="text-success"><?php echo e(number_format($completedEnrollments)); ?></strong>
                             <span>Completed</span>
-                        </div>
-                        <div class="dashboard-mini-stat">
+                        </a>
+                        <a href="<?php echo e(route('trainee.enrollments.index', ['status' => 'enrolled'])); ?>" class="dashboard-mini-stat text-decoration-none">
                             <strong class="text-warning"><?php echo e(number_format($enrolledCount)); ?></strong>
                             <span>Enrolled</span>
-                        </div>
-                        <div class="dashboard-mini-stat">
+                        </a>
+                        <a href="<?php echo e(route('trainee.enrollments.index', ['status' => 'completed'])); ?>" class="dashboard-mini-stat text-decoration-none">
                             <strong class="text-secondary"><?php echo e(number_format($certificates)); ?></strong>
                             <span>Certificates</span>
-                        </div>
+                        </a>
                     </div>
                     <p class="dashboard-section-title mb-2">Completion progress</p>
                     <div class="dashboard-progress-item mb-0">

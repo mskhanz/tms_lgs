@@ -19,7 +19,7 @@ class DashboardController extends Controller
         // Get enrollment statistics
         $enrollments = $user->enrollments()->with('trainingBatch.trainingProgram')->get();
         $totalEnrollments = $enrollments->count();
-        $ongoingEnrollments = $enrollments->where('status', 'in_progress')->count();
+        $ongoingEnrollments = $enrollments->filter(fn ($e) => $e->isOngoing())->count();
         $completedEnrollments = $enrollments->where('status', 'completed')->count();
         $enrolledCount = $enrollments->where('status', 'enrolled')->count();
         

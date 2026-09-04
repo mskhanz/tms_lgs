@@ -1086,6 +1086,17 @@ body {
     padding: 0.85rem 1rem;
 }
 
+a.dashboard-mini-stat {
+    color: inherit;
+    transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
+}
+
+a.dashboard-mini-stat:hover {
+    background: #ecfdf5;
+    border-color: #a7f3d0;
+    box-shadow: 0 4px 12px rgba(5, 150, 105, 0.08);
+}
+
 .dashboard-mini-stat strong {
     display: block;
     font-size: 1.25rem;

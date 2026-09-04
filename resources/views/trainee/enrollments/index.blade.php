@@ -7,19 +7,19 @@
     $statusBadges = [
         'completed' => 'success',
         'in_progress' => 'primary',
-        'enrolled' => 'warning text-dark',
+        'enrolled' => 'primary',
         'dropped' => 'danger',
         'failed' => 'danger',
     ];
     $statusLabels = [
         'completed' => 'Completed',
         'in_progress' => 'Ongoing',
-        'enrolled' => 'Enrolled',
+        'enrolled' => 'Ongoing',
         'dropped' => 'Dropped',
         'failed' => 'Failed',
     ];
     $pageTitle = match ($status) {
-        'in_progress' => 'Ongoing Trainings',
+        'ongoing' => 'Ongoing Trainings',
         'completed' => 'Completed Trainings',
         'enrolled' => 'Enrolled Trainings',
         default => 'My Enrollments',
@@ -48,9 +48,9 @@
        class="btn btn-sm {{ ! $status ? 'btn-success' : 'btn-outline-secondary' }}">
         All ({{ $counts['all'] }})
     </a>
-    <a href="{{ route('trainee.enrollments.index', ['status' => 'in_progress']) }}"
-       class="btn btn-sm {{ $status === 'in_progress' ? 'btn-primary' : 'btn-outline-primary' }}">
-        Ongoing ({{ $counts['in_progress'] }})
+    <a href="{{ route('trainee.enrollments.index', ['status' => 'ongoing']) }}"
+       class="btn btn-sm {{ $status === 'ongoing' ? 'btn-primary' : 'btn-outline-primary' }}">
+        Ongoing ({{ $counts['ongoing'] }})
     </a>
     <a href="{{ route('trainee.enrollments.index', ['status' => 'enrolled']) }}"
        class="btn btn-sm {{ $status === 'enrolled' ? 'btn-warning' : 'btn-outline-warning' }}">
@@ -65,7 +65,7 @@
 @if($enrollments->isEmpty())
 <div class="alert alert-info mb-0">
     <i class="bi bi-info-circle me-2"></i>
-    @if($status === 'in_progress')
+    @if($status === 'ongoing')
         No ongoing trainings at the moment.
     @else
         No enrollments found for this filter.

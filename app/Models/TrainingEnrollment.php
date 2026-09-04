@@ -57,4 +57,25 @@ class TrainingEnrollment extends Model
     {
         return $this->hasOne(Certificate::class, 'enrollment_id');
     }
+
+    public function isOngoing(): bool
+    {
+        return in_array($this->status, ['enrolled', 'in_progress'], true);
+    }
+
+    public function scopeOngoing($query)
+    {
+        return $query->whereIn('status', ['enrolled', 'in_progress']);
+    }
+
+    public function statusLabel(): string
+    {
+        return match ($this->status) {
+            'enrolled', 'in_progress' => 'Ongoing',
+            'completed' => 'Completed',
+            'dropped' => 'Dropped',
+            'failed' => 'Failed',
+            default => ucfirst(str_replace('_', ' ', (string) $this->status)),
+        };
+    }
 }
