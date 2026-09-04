@@ -39,7 +39,8 @@
     </div>
 </div>
 
-<div class="quiz-report">
+
+<div class="quiz-report no-print">
     <div class="quiz-report-banner">
         <div class="quiz-report-brand">
             <img src="<?php echo e(asset('images/kp-logo.png')); ?>" alt="KP Logo" class="quiz-report-logo">
@@ -95,6 +96,7 @@
                 <tr>
                     <th style="width: 56px;">S. No</th>
                     <th>Trainee</th>
+                    <th>CNIC</th>
                     <th>Organization</th>
                     <th>Score</th>
                     <th>%</th>
@@ -106,10 +108,8 @@
                 <?php $__empty_1 = true; $__currentLoopData = $attempted; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $attempt): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                 <tr>
                     <td><?php echo e($index + 1); ?></td>
-                    <td>
-                        <strong><?php echo e($traineeName($attempt->user)); ?></strong>
-                        <div class="small text-muted"><?php echo e($traineeCnic($attempt->user)); ?></div>
-                    </td>
+                    <td><strong><?php echo e($traineeName($attempt->user)); ?></strong></td>
+                    <td><?php echo e($traineeCnic($attempt->user)); ?></td>
                     <td><?php echo e($traineeOrg($attempt->user)); ?></td>
                     <td><?php echo e($attempt->correct_answers); ?>/<?php echo e($attempt->total_questions); ?></td>
                     <td class="fw-semibold"><?php echo e(number_format((float) $attempt->percentage, 1)); ?>%</td>
@@ -123,7 +123,7 @@
                 </tr>
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                 <tr>
-                    <td colspan="7" class="text-center py-4 text-muted">No completed attempts yet.</td>
+                    <td colspan="8" class="text-center py-4 text-muted">No completed attempts yet.</td>
                 </tr>
                 <?php endif; ?>
             </tbody>
@@ -175,6 +175,15 @@
         · Generated <?php echo e(now()->format('d M Y, h:i A')); ?>
 
     </div>
+</div>
+
+
+<div class="quiz-print-document print-only">
+    <?php echo $__env->make('admin.quizzes._results-document', [
+        'logoUrl' => asset('images/kp-logo.png'),
+        'traineeName' => $traineeName,
+        'traineeOrg' => $traineeOrg,
+    ], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 </div>
 <?php $__env->stopSection(); ?>
 
@@ -327,6 +336,8 @@
         font-size: 0.78rem;
         color: #64748b;
     }
+    .print-only { display: none; }
+
     @media (max-width: 992px) {
         .quiz-report-info,
         .quiz-report-stats {
@@ -337,6 +348,7 @@
             border-bottom: 1px solid #e2e8f0;
         }
     }
+
     @media print {
         .no-print,
         .app-sidebar,
@@ -347,25 +359,124 @@
             display: none !important;
         }
         .app-wrapper,
-        .app-main {
+        .app-main,
+        .app-main-wrapper {
             margin: 0 !important;
             padding: 0 !important;
             width: 100% !important;
             max-width: 100% !important;
         }
-        .quiz-report {
-            border: 0;
-            border-radius: 0;
-        }
-        .quiz-report-banner,
-        .badge {
+        body { background: #fff !important; color: #1f2937; font-size: 11px; }
+        .print-only { display: block !important; }
+
+        .quiz-print-document .banner {
+            background: #047857;
+            color: #fff;
+            padding: 12px 14px;
             -webkit-print-color-adjust: exact;
             print-color-adjust: exact;
         }
-        .quiz-report-table thead { display: table-header-group; }
-        .quiz-report-section { break-after: avoid; }
+        .quiz-print-document .banner table { width: 100%; border-collapse: collapse; }
+        .quiz-print-document .logo {
+            width: 42px;
+            height: 42px;
+            object-fit: contain;
+            background: #fff;
+            border-radius: 50%;
+            padding: 3px;
+        }
+        .quiz-print-document .brand-kicker { font-size: 8px; margin: 0 0 2px; }
+        .quiz-print-document .brand-title { font-size: 15px; font-weight: 700; margin: 0; }
+        .quiz-print-document .brand-sub { font-size: 9px; margin: 2px 0 0; }
+        .quiz-print-document .meta { text-align: right; font-size: 10px; white-space: nowrap; }
+        .quiz-print-document .info { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        .quiz-print-document .info td { width: 25%; vertical-align: top; padding: 6px 8px 8px 0; }
+        .quiz-print-document .label {
+            display: block;
+            font-size: 8px;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+        .quiz-print-document .value {
+            display: block;
+            font-size: 11px;
+            font-weight: 700;
+            margin-top: 2px;
+        }
+        .quiz-print-document .stats { width: 100%; border-collapse: collapse; margin: 4px 0 10px; }
+        .quiz-print-document .stats td {
+            width: 16.66%;
+            border: 1px solid #d1d5db;
+            background: #f8fafc;
+            text-align: center;
+            padding: 7px 4px;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+        .quiz-print-document .stats b { display: block; font-size: 13px; }
+        .quiz-print-document .stats span {
+            display: block;
+            font-size: 8px;
+            color: #6b7280;
+            text-transform: uppercase;
+            margin-top: 2px;
+        }
+        .quiz-print-document .pass { color: #047857; }
+        .quiz-print-document .fail { color: #b91c1c; }
+        .quiz-print-document h3 {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.7px;
+            color: #047857;
+            border-bottom: 1px solid #a7f3d0;
+            padding-bottom: 4px;
+            margin: 14px 0 4px;
+        }
+        .quiz-print-document .note,
+        .quiz-print-document .sub { font-size: 9px; color: #6b7280; margin: 0 0 8px; }
+        .quiz-print-document table.data {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 8px;
+        }
+        .quiz-print-document table.data th,
+        .quiz-print-document table.data td {
+            border: 1px solid #d1d5db;
+            padding: 5px 6px;
+            text-align: left;
+            font-size: 10px;
+            vertical-align: top;
+        }
+        .quiz-print-document table.data th {
+            background: #f3f4f6;
+            font-size: 9px;
+            text-transform: uppercase;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+        .quiz-print-document table.data thead { display: table-header-group; }
+        .quiz-print-document .badge {
+            display: inline-block;
+            padding: 2px 6px;
+            font-size: 9px;
+            font-weight: 700;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+        .quiz-print-document .badge-success { background: #d1fae5; color: #065f46; }
+        .quiz-print-document .badge-danger { background: #fee2e2; color: #991b1b; }
+        .quiz-print-document .badge-warning { background: #fef3c7; color: #92400e; }
+        .quiz-print-document .badge-secondary { background: #f3f4f6; color: #374151; }
+        .quiz-print-document .empty { text-align: center; color: #6b7280; padding: 10px; }
+        .quiz-print-document .footer {
+            margin-top: 14px;
+            font-size: 9px;
+            color: #6b7280;
+            border-top: 1px solid #e5e7eb;
+            padding-top: 6px;
+        }
         tr { break-inside: avoid; }
-        body { background: #fff; }
     }
 </style>
 <?php $__env->stopPush(); ?>
