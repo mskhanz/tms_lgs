@@ -9,6 +9,8 @@
 @section('content')
 @php
     $canEdit = $assignment->isAvailable() && (! $submission?->isSubmitted() || $assignment->canTraineeEditSubmission());
+    $traineeUser = auth()->user();
+    $traineeName = $traineeUser?->traineeProfile?->emp_name ?? $traineeUser?->name ?? 'Trainee';
     if ($submission?->isSubmitted()) {
         $statusLabel = $submission->statusLabel();
         $statusClass = $submission->isLate() ? 'bg-warning text-dark' : 'bg-success text-white';
@@ -135,7 +137,7 @@
 
     <div class="asg-panel asg-panel-auto">
         <div class="asg-panel-head">
-            <h2>Your submission</h2>
+            <h2>Your submission: {{ $traineeName }}</h2>
             @if($submission?->submitted_at)
             <span class="badge bg-light text-dark">{{ $submission->submitted_at->format('d M Y, h:i A') }}</span>
             @endif
