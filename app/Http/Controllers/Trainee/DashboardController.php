@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Trainee;
 
 use App\Http\Controllers\Controller;
+use App\Support\TraineeAssignmentData;
 use App\Support\TraineeQuizData;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
@@ -88,6 +89,7 @@ class DashboardController extends Controller
         $unreadNotificationsCount = $user->notifications()->unread()->count();
 
         $quizData = TraineeQuizData::load($user->id);
+        $assignmentData = TraineeAssignmentData::load($user->id);
 
         return view('trainee.dashboard', array_merge(
             compact(
@@ -108,7 +110,8 @@ class DashboardController extends Controller
                 'todayAttendanceRows',
                 'today'
             ),
-            $quizData
+            $quizData,
+            $assignmentData
         ));
     }
 }

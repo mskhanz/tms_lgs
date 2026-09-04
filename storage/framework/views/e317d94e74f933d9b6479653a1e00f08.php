@@ -86,6 +86,14 @@
                 </li>
 
                 <li class="sidebar-menu-item">
+                    <a href="<?php echo e(route('trainee.assignments.index')); ?>"
+                       class="sidebar-menu-link <?php echo e(request()->routeIs('trainee.assignments.*') ? 'active' : ''); ?>">
+                        <i class="bi bi-file-earmark-text"></i>
+                        <span>My Assignments</span>
+                    </a>
+                </li>
+
+                <li class="sidebar-menu-item">
                     <a href="#" class="sidebar-menu-link">
                         <i class="bi bi-award"></i>
                         <span>My Certificates</span>
@@ -203,7 +211,7 @@
                     </a>
                 </li>
 
-                <li class="sidebar-menu-item has-submenu">
+                <li class="sidebar-menu-item has-submenu <?php echo e(request()->routeIs('admin.quizzes.*') ? 'open' : ''); ?>">
                     <a href="#" class="sidebar-menu-link">
                         <i class="bi bi-clipboard-check"></i>
                         <span>Quizzes</span>
@@ -218,6 +226,26 @@
                         <li>
                             <a href="<?php echo e(route('admin.quizzes.create')); ?>" class="sidebar-menu-link">
                                 <i class="bi bi-plus-circle"></i> Create Quiz
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="sidebar-menu-item has-submenu <?php echo e(request()->routeIs('admin.assignments.*') ? 'open' : ''); ?>">
+                    <a href="#" class="sidebar-menu-link">
+                        <i class="bi bi-file-earmark-text"></i>
+                        <span>Assignments</span>
+                        <i class="bi bi-chevron-down"></i>
+                    </a>
+                    <ul class="sidebar-submenu">
+                        <li>
+                            <a href="<?php echo e(route('admin.assignments.index')); ?>" class="sidebar-menu-link">
+                                <i class="bi bi-list-task"></i> All Assignments
+                            </a>
+                        </li>
+                        <li>
+                            <a href="<?php echo e(route('admin.assignments.create')); ?>" class="sidebar-menu-link">
+                                <i class="bi bi-plus-circle"></i> Create Assignment
                             </a>
                         </li>
                     </ul>

@@ -132,7 +132,7 @@
 
     .trainee-dashboard .trainee-kpi-grid {
         display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
+        grid-template-columns: repeat(5, minmax(0, 1fr));
         gap: 1rem;
         margin-bottom: 1.5rem;
     }
@@ -418,6 +418,9 @@
             <a href="{{ route('trainee.quizzes.index') }}" class="btn btn-light">
                 <i class="bi bi-clipboard-check me-1"></i>My Quizzes
             </a>
+            <a href="{{ route('trainee.assignments.index') }}" class="btn btn-outline-light">
+                <i class="bi bi-file-earmark-text me-1"></i>My Assignments
+            </a>
             <a href="{{ route('trainee.attendance.index') }}" class="btn btn-outline-light">
                 <i class="bi bi-calendar-check me-1"></i>My Attendance
             </a>
@@ -462,8 +465,15 @@
         <a href="{{ route('trainee.quizzes.index') }}" class="trainee-kpi-card">
             <div class="trainee-kpi-icon teal"><i class="bi bi-clipboard-check"></i></div>
             <div>
-                <span class="trainee-kpi-value">{{ $openQuizzesCount }}</span>
+                <span class="trainee-kpi-value">{{ $openQuizzesCount ?? 0 }}</span>
                 <span class="trainee-kpi-label">Open quizzes</span>
+            </div>
+        </a>
+        <a href="{{ route('trainee.assignments.index') }}" class="trainee-kpi-card">
+            <div class="trainee-kpi-icon amber"><i class="bi bi-file-earmark-text"></i></div>
+            <div>
+                <span class="trainee-kpi-value">{{ $openAssignmentsCount ?? 0 }}</span>
+                <span class="trainee-kpi-label">Open assignments</span>
             </div>
         </a>
     </div>
@@ -495,6 +505,46 @@
             </div>
             @else
             <p class="text-muted text-center mb-0 py-3">No active quizzes at the moment.</p>
+            @endif
+        </div>
+    </div>
+
+    <!-- Available Assignments -->
+    <div class="card mb-4 border-0 shadow-sm">
+        <div class="card-header bg-white d-flex flex-column flex-sm-row justify-content-between align-items-stretch align-items-sm-center gap-2 py-3">
+            <h5 class="mb-0"><i class="bi bi-file-earmark-text me-2 text-success"></i>Assignments</h5>
+            <a href="{{ route('trainee.assignments.index') }}" class="btn btn-sm btn-outline-primary align-self-sm-center">
+                View All <i class="bi bi-arrow-right ms-1"></i>
+            </a>
+        </div>
+        <div class="card-body">
+            @if(!empty($assignmentLoadError))
+            <div class="alert alert-danger mb-3">
+                <i class="bi bi-exclamation-octagon me-2"></i>
+                <strong>Assignments could not be loaded.</strong>
+                <div class="small mt-1">{{ $assignmentLoadError }}</div>
+            </div>
+            @endif
+
+            @php
+                $availableAssignments = $availableAssignments ?? collect();
+                $assignmentSubmissions = $assignmentSubmissions ?? collect();
+            @endphp
+
+            @if($availableAssignments->count() > 0)
+            <div class="row g-3">
+                @foreach($availableAssignments->take(6) as $assignment)
+                <div class="col-md-6 col-lg-4">
+                    @include('trainee.assignments._card', [
+                        'assignment' => $assignment,
+                        'submissions' => $assignmentSubmissions,
+                        'cardClass' => 'border rounded h-100',
+                    ])
+                </div>
+                @endforeach
+            </div>
+            @else
+            <p class="text-muted text-center mb-0 py-3">No assignments at the moment.</p>
             @endif
         </div>
     </div>

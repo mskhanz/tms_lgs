@@ -37,7 +37,7 @@ CREATE TABLE `activity_logs` (
   KEY `activity_logs_log_name_index` (`log_name`),
   KEY `activity_logs_created_at_index` (`created_at`),
   KEY `activity_logs_log_name_created_at_index` (`log_name`,`created_at`)
-) ENGINE=InnoDB AUTO_INCREMENT=339 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=342 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `activity_logs` */
 
@@ -379,7 +379,10 @@ insert  into `activity_logs`(`id`,`log_name`,`description`,`user_id`,`subject_ty
 (335,'auth','Logged in',55,NULL,NULL,'App\\Models\\User',55,'{\"ip_address\":\"2402:e000:648:914f::1\",\"session_id\":\"oklhVaIK5yiT5wjznfgOPgJ6j6Oq3SIh2XAoOQ9W\"}','2402:e000:648:914f::1','Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Mobile Safari/537.36','2026-09-04 16:39:12','2026-09-04 16:39:12'),
 (336,'system','Imported quiz MSQs from Excel',1,'App\\Models\\Quiz',2,'App\\Models\\User',1,'{\"imported\":60,\"replaced\":false}','::1','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36','2026-09-04 12:10:35','2026-09-04 12:10:35'),
 (337,'auth','Logged in',17,NULL,NULL,'App\\Models\\User',17,'{\"ip_address\":\"127.0.0.1\",\"session_id\":\"bPuxY4DSfgBUvR0ScvX8WSGdzRDV0Z5YT8ToffVD\"}','127.0.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:154.0) Gecko/20100101 Firefox/154.0','2026-09-04 12:13:16','2026-09-04 12:13:16'),
-(338,'system','Trainee enrolled in training batch',1,'App\\Models\\TrainingEnrollment',37,'App\\Models\\User',1,'[]','::1','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36','2026-09-04 12:14:04','2026-09-04 12:14:04');
+(338,'system','Trainee enrolled in training batch',1,'App\\Models\\TrainingEnrollment',37,'App\\Models\\User',1,'[]','::1','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36','2026-09-04 12:14:04','2026-09-04 12:14:04'),
+(339,'auth','Logged in',1,NULL,NULL,'App\\Models\\User',1,'{\"ip_address\":\"::1\",\"session_id\":\"R0Vf4sJPsTZECYyLCJU1QN9H0sctQqvMJ83E8RKk\"}','::1','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36','2026-09-04 18:22:15','2026-09-04 18:22:15'),
+(340,'system','Assignment created',1,'App\\Models\\Assignment',1,'App\\Models\\User',1,'[]','::1','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36','2026-09-04 18:58:00','2026-09-04 18:58:00'),
+(341,'auth','Logged in',17,NULL,NULL,'App\\Models\\User',17,'{\"ip_address\":\"127.0.0.1\",\"session_id\":\"9H8ylESWr7Xtk4lowGnL4VOYkWfktBlwB2Gosqwz\"}','127.0.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:154.0) Gecko/20100101 Firefox/154.0','2026-09-04 19:00:25','2026-09-04 19:00:25');
 
 /*Table structure for table `assessment_results` */
 
@@ -436,6 +439,106 @@ CREATE TABLE `assessments` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*Data for the table `assessments` */
+
+/*Table structure for table `assignment_attachments` */
+
+DROP TABLE IF EXISTS `assignment_attachments`;
+
+CREATE TABLE `assignment_attachments` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `assignment_id` bigint(20) unsigned NOT NULL,
+  `title` varchar(255) DEFAULT NULL,
+  `original_name` varchar(255) NOT NULL,
+  `stored_name` varchar(255) NOT NULL,
+  `mime_type` varchar(100) DEFAULT NULL,
+  `file_size` bigint(20) unsigned NOT NULL DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `assignment_attachments_assignment_id_index` (`assignment_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+/*Data for the table `assignment_attachments` */
+
+insert  into `assignment_attachments`(`id`,`assignment_id`,`title`,`original_name`,`stored_name`,`mime_type`,`file_size`,`created_at`,`updated_at`) values 
+(1,1,'for reference read','quiz-results-pre-test (3).pdf','assign1_20260904185800_lZpqehlL.pdf','application/pdf',934520,'2026-09-04 18:58:00','2026-09-04 18:58:00');
+
+/*Table structure for table `assignment_submission_files` */
+
+DROP TABLE IF EXISTS `assignment_submission_files`;
+
+CREATE TABLE `assignment_submission_files` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `submission_id` bigint(20) unsigned NOT NULL,
+  `original_name` varchar(255) NOT NULL,
+  `stored_name` varchar(255) NOT NULL,
+  `mime_type` varchar(100) DEFAULT NULL,
+  `file_size` bigint(20) unsigned NOT NULL DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `assignment_submission_files_submission_id_index` (`submission_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+/*Data for the table `assignment_submission_files` */
+
+/*Table structure for table `assignment_submissions` */
+
+DROP TABLE IF EXISTS `assignment_submissions`;
+
+CREATE TABLE `assignment_submissions` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `assignment_id` bigint(20) unsigned NOT NULL,
+  `user_id` bigint(20) unsigned NOT NULL,
+  `written_response` text DEFAULT NULL,
+  `status` enum('draft','submitted') NOT NULL DEFAULT 'draft',
+  `submitted_at` timestamp NULL DEFAULT NULL,
+  `marks` decimal(8,2) DEFAULT NULL,
+  `admin_feedback` text DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `assignment_submissions_assignment_id_user_id_unique` (`assignment_id`,`user_id`),
+  KEY `assignment_submissions_user_id_index` (`user_id`),
+  KEY `assignment_submissions_status_index` (`status`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+/*Data for the table `assignment_submissions` */
+
+insert  into `assignment_submissions`(`id`,`assignment_id`,`user_id`,`written_response`,`status`,`submitted_at`,`marks`,`admin_feedback`,`created_at`,`updated_at`) values 
+(1,1,17,'agccsfdsfsafsa fadfa sfsa f','submitted','2026-09-04 19:00:55',8.00,NULL,'2026-09-04 19:00:55','2026-09-04 19:15:30');
+
+/*Table structure for table `assignments` */
+
+DROP TABLE IF EXISTS `assignments`;
+
+CREATE TABLE `assignments` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) NOT NULL,
+  `instructions` text DEFAULT NULL,
+  `total_marks` decimal(8,2) NOT NULL DEFAULT 100.00,
+  `assign_to` enum('program','batch') DEFAULT NULL,
+  `training_program_id` bigint(20) unsigned DEFAULT NULL,
+  `training_batch_id` bigint(20) unsigned DEFAULT NULL,
+  `due_at` timestamp NULL DEFAULT NULL,
+  `available_from` timestamp NULL DEFAULT NULL,
+  `available_until` timestamp NULL DEFAULT NULL,
+  `is_active` tinyint(1) NOT NULL DEFAULT 0,
+  `created_by` bigint(20) unsigned DEFAULT NULL,
+  `published_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `assignments_assign_to_training_program_id_index` (`assign_to`,`training_program_id`),
+  KEY `assignments_assign_to_training_batch_id_index` (`assign_to`,`training_batch_id`),
+  KEY `assignments_is_active_index` (`is_active`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+/*Data for the table `assignments` */
+
+insert  into `assignments`(`id`,`title`,`instructions`,`total_marks`,`assign_to`,`training_program_id`,`training_batch_id`,`due_at`,`available_from`,`available_until`,`is_active`,`created_by`,`published_at`,`created_at`,`updated_at`,`deleted_at`) values 
+(1,'case study','adsfasfdsaf dfasf saf',10.00,'program',2,NULL,'2026-09-05 18:57:00','2026-09-04 18:57:00','2026-09-05 18:57:00',1,1,'2026-09-04 18:58:00','2026-09-04 18:58:00','2026-09-04 19:15:00',NULL);
 
 /*Table structure for table `attendance_change_logs` */
 
@@ -1544,7 +1647,7 @@ CREATE TABLE `login_sessions` (
   KEY `login_sessions_last_activity_at_index` (`last_activity_at`),
   KEY `login_sessions_logged_in_at_index` (`logged_in_at`),
   KEY `login_sessions_logged_out_at_last_activity_at_index` (`logged_out_at`,`last_activity_at`)
-) ENGINE=InnoDB AUTO_INCREMENT=118 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=120 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*Data for the table `login_sessions` */
 
@@ -1662,10 +1765,12 @@ insert  into `login_sessions`(`id`,`user_id`,`session_id`,`ip_address`,`user_age
 (111,20,'3v1wfgfHQ8CV4nU511x3kAGzGIEHotMi8RkaVRrT','37.111.177.61','Mozilla/5.0 (iPhone; CPU iPhone OS 26_2_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/152.0.7977.64 Mobile/15E148 Safari/604.1','2026-09-04 08:10:14','2026-09-04 03:25:07','2026-09-04 13:10:14','expired','2026-09-04 03:13:15','2026-09-04 13:10:14'),
 (112,1,'MmhDO76B5xkKCr84NAjXKP2bXJVeH9AzFy8xk0Lw','2400:adcc:12c:6100:79e6:73e0:3892:99ee','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36','2026-09-04 11:37:06','2026-09-04 13:37:57','2026-09-04 16:37:06','expired','2026-09-04 13:10:14','2026-09-04 16:37:06'),
 (113,54,'ePZy3Gg877eCapN4e4w41asw3seIF759y0PGeKn6','103.57.225.30','Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) SamsungBrowser/29.0 Chrome/136.0.0.0 Mobile Safari/537.36','2026-09-04 11:37:06','2026-09-04 14:33:07','2026-09-04 16:37:06','expired','2026-09-04 14:33:07','2026-09-04 16:37:06'),
-(114,18,'8sivqTLWxcMgqVgbb4DFmYQEaDN1WGPYnKkYNGvZ','154.198.85.46','Mozilla/5.0 (iPhone; CPU iPhone OS 26_3_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/152.0.7977.64 Mobile/15E148 Safari/604.1','2026-09-04 11:37:46','2026-09-04 16:37:46',NULL,NULL,'2026-09-04 16:37:06','2026-09-04 16:37:46'),
-(115,55,'oklhVaIK5yiT5wjznfgOPgJ6j6Oq3SIh2XAoOQ9W','2402:e000:648:914f::1','Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Mobile Safari/537.36','2026-09-04 11:41:01','2026-09-04 16:41:01',NULL,NULL,'2026-09-04 16:39:12','2026-09-04 16:41:01'),
-(116,1,'VR6NGsRVegPU15RwOWOO3oMo9YR4xkKMBxKiUbf9','::1','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36','2026-09-04 12:32:03','2026-09-04 12:32:03',NULL,NULL,'2026-09-04 11:50:06','2026-09-04 12:32:03'),
-(117,17,'bPuxY4DSfgBUvR0ScvX8WSGdzRDV0Z5YT8ToffVD','127.0.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:154.0) Gecko/20100101 Firefox/154.0','2026-09-04 12:21:07','2026-09-04 12:21:07',NULL,NULL,'2026-09-04 12:13:16','2026-09-04 12:21:07');
+(114,18,'8sivqTLWxcMgqVgbb4DFmYQEaDN1WGPYnKkYNGvZ','154.198.85.46','Mozilla/5.0 (iPhone; CPU iPhone OS 26_3_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/152.0.7977.64 Mobile/15E148 Safari/604.1','2026-09-04 18:50:26','2026-09-04 16:37:46','2026-09-04 18:50:26','expired','2026-09-04 16:37:06','2026-09-04 18:50:26'),
+(115,55,'oklhVaIK5yiT5wjznfgOPgJ6j6Oq3SIh2XAoOQ9W','2402:e000:648:914f::1','Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Mobile Safari/537.36','2026-09-04 18:50:26','2026-09-04 16:41:01','2026-09-04 18:50:26','expired','2026-09-04 16:39:12','2026-09-04 18:50:26'),
+(116,1,'VR6NGsRVegPU15RwOWOO3oMo9YR4xkKMBxKiUbf9','::1','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36','2026-09-04 18:22:15','2026-09-04 12:32:03','2026-09-04 18:22:15','expired','2026-09-04 11:50:06','2026-09-04 18:22:15'),
+(117,17,'bPuxY4DSfgBUvR0ScvX8WSGdzRDV0Z5YT8ToffVD','127.0.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:154.0) Gecko/20100101 Firefox/154.0','2026-09-04 18:22:15','2026-09-04 12:21:07','2026-09-04 18:22:15','expired','2026-09-04 12:13:16','2026-09-04 18:22:15'),
+(118,1,'R0Vf4sJPsTZECYyLCJU1QN9H0sctQqvMJ83E8RKk','::1','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36','2026-09-04 19:16:23','2026-09-04 19:16:23',NULL,NULL,'2026-09-04 18:22:15','2026-09-04 19:16:23'),
+(119,17,'9H8ylESWr7Xtk4lowGnL4VOYkWfktBlwB2Gosqwz','127.0.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:154.0) Gecko/20100101 Firefox/154.0','2026-09-04 19:16:47','2026-09-04 19:16:47',NULL,NULL,'2026-09-04 19:00:25','2026-09-04 19:16:47');
 
 /*Table structure for table `migrations` */
 
@@ -1676,7 +1781,7 @@ CREATE TABLE `migrations` (
   `migration` varchar(255) NOT NULL,
   `batch` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*Data for the table `migrations` */
 
@@ -1719,7 +1824,13 @@ insert  into `migrations`(`id`,`migration`,`batch`) values
 (36,'2026_09_01_000006_add_assignment_to_quizzes',7),
 (37,'2026_09_01_000007_create_login_sessions_table',8),
 (38,'2026_09_01_000008_add_performance_indexes',9),
-(39,'2026_09_04_000001_add_is_active_to_quiz_questions',10);
+(39,'2026_09_04_000001_add_is_active_to_quiz_questions',10),
+(40,'2026_09_04_100001_create_assignments_table',11),
+(41,'2026_09_04_100002_create_assignment_attachments_table',12),
+(42,'2026_09_04_100003_create_assignment_submissions_table',13),
+(43,'2026_09_04_100004_create_assignment_submission_files_table',14),
+(44,'2026_09_04_100005_add_title_to_assignment_attachments',15),
+(45,'2026_09_04_100006_add_total_marks_to_assignments',16);
 
 /*Table structure for table `notifications` */
 
@@ -1738,7 +1849,7 @@ CREATE TABLE `notifications` (
   PRIMARY KEY (`id`),
   KEY `notifications_user_id_read_at_index` (`user_id`,`read_at`),
   KEY `notifications_user_id_created_at_index` (`user_id`,`created_at`)
-) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `notifications` */
 
@@ -1779,7 +1890,8 @@ insert  into `notifications`(`id`,`user_id`,`type`,`title`,`message`,`data`,`rea
 (34,51,'enrollment','Training Enrollment','You have been enrolled in THREE (03) MONTHS MANDATORY PRE-PROMOTION/ MID  CAREER TRAINING:','{\"enrollment_id\":34,\"batch_id\":1,\"url\":\"https:\\/\\/app.code4msk.com\\/trainee\\/dashboard\",\"icon\":\"journal-check\"}',NULL,'2026-09-03 20:22:29','2026-09-03 20:22:29'),
 (35,53,'enrollment','Training Enrollment','You have been enrolled in THREE (03) MONTHS MANDATORY PRE-PROMOTION/ MID  CAREER TRAINING:','{\"enrollment_id\":35,\"batch_id\":1,\"url\":\"https:\\/\\/app.code4msk.com\\/trainee\\/dashboard\",\"icon\":\"journal-check\"}',NULL,'2026-09-03 20:35:52','2026-09-03 20:35:52'),
 (36,52,'enrollment','Training Enrollment','You have been enrolled in THREE (03) MONTHS MANDATORY PRE-PROMOTION/ MID  CAREER TRAINING:','{\"enrollment_id\":36,\"batch_id\":1,\"url\":\"https:\\/\\/app.code4msk.com\\/trainee\\/dashboard\",\"icon\":\"journal-check\"}',NULL,'2026-09-03 20:35:52','2026-09-03 20:35:52'),
-(37,17,'enrollment','Training Enrollment','You have been enrolled in BPS-11 LCS-PUGF(ADMIN & ENGG CADRE) THREE (03) MONTHS MANDATORY PRE-PROMOTION TRAINING','{\"enrollment_id\":37,\"batch_id\":2,\"url\":\"http:\\/\\/localhost\\/tms_lgs\\/public\\/trainee\\/dashboard\",\"icon\":\"journal-check\"}',NULL,'2026-09-04 12:14:03','2026-09-04 12:14:03');
+(37,17,'enrollment','Training Enrollment','You have been enrolled in BPS-11 LCS-PUGF(ADMIN & ENGG CADRE) THREE (03) MONTHS MANDATORY PRE-PROMOTION TRAINING','{\"enrollment_id\":37,\"batch_id\":2,\"url\":\"http:\\/\\/localhost\\/tms_lgs\\/public\\/trainee\\/dashboard\",\"icon\":\"journal-check\"}',NULL,'2026-09-04 12:14:03','2026-09-04 12:14:03'),
+(38,17,'assignment','New Assignment','A new assignment has been published: case study','{\"assignment_id\":1,\"url\":\"http:\\/\\/localhost\\/tms_lgs\\/public\\/trainee\\/assignments\\/1\",\"icon\":\"file-earmark-text\"}',NULL,'2026-09-04 18:58:00','2026-09-04 18:58:00');
 
 /*Table structure for table `organizations` */
 

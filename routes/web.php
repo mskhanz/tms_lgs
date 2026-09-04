@@ -4,8 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\{RegisteredUserController, AuthenticatedSessionController, EmailVerificationController, PasswordResetLinkController, NewPasswordController};
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\NotificationController;
-use App\Http\Controllers\Trainee\{DashboardController as TraineeDashboardController, ProfileController, QuizController as TraineeQuizController, AttendanceController as TraineeAttendanceController};
-use App\Http\Controllers\Admin\{DashboardController as AdminDashboardController, EnrollmentController, ProgramController, BatchController, AttendanceController, UserController, RoleController, TraineeController, QuizController, RegistrationTrainingController, ActivityLogController, OnlineUserController, LoginHistoryController};
+use App\Http\Controllers\Trainee\{DashboardController as TraineeDashboardController, ProfileController, QuizController as TraineeQuizController, AttendanceController as TraineeAttendanceController, AssignmentController as TraineeAssignmentController};
+use App\Http\Controllers\Admin\{DashboardController as AdminDashboardController, EnrollmentController, ProgramController, BatchController, AttendanceController, UserController, RoleController, TraineeController, QuizController, AssignmentController, RegistrationTrainingController, ActivityLogController, OnlineUserController, LoginHistoryController};
 
 // Public routes
 Route::get('/', function () {
@@ -90,6 +90,13 @@ Route::middleware(['auth'])->prefix('trainee')->name('trainee.')->group(function
     Route::post('/quizzes/attempt/{attempt}/save', [TraineeQuizController::class, 'saveProgress'])->name('quizzes.save');
     Route::post('/quizzes/attempt/{attempt}/submit', [TraineeQuizController::class, 'submit'])->name('quizzes.submit');
     Route::get('/quizzes/attempt/{attempt}/result', [TraineeQuizController::class, 'result'])->name('quizzes.result');
+
+    // Assignment routes
+    Route::get('/assignments', [TraineeAssignmentController::class, 'index'])->name('assignments.index');
+    Route::get('/assignments/{assignment}', [TraineeAssignmentController::class, 'show'])->name('assignments.show');
+    Route::post('/assignments/{assignment}/submit', [TraineeAssignmentController::class, 'submit'])->name('assignments.submit');
+    Route::get('/assignments/{assignment}/attachments/{attachment}/download', [TraineeAssignmentController::class, 'downloadAttachment'])->name('assignments.attachments.download');
+    Route::get('/assignments/{assignment}/files/{file}/download', [TraineeAssignmentController::class, 'downloadSubmissionFile'])->name('assignments.files.download');
 });
 
 // Admin routes (System Admin, Director, Deputy Director, Training Officer) - email verification disabled
@@ -140,6 +147,14 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('/quizzes/{quiz}/questions/{question}/edit', [QuizController::class, 'editQuestion'])->name('quizzes.questions.edit');
     Route::put('/quizzes/{quiz}/questions/{question}', [QuizController::class, 'updateQuestion'])->name('quizzes.questions.update');
     Route::delete('/quizzes/{quiz}/questions/{question}', [QuizController::class, 'destroyQuestion'])->name('quizzes.questions.destroy');
+
+    // Assignment Management
+    Route::resource('assignments', AssignmentController::class);
+    Route::post('/assignments/{assignment}/toggle-status', [AssignmentController::class, 'toggleStatus'])->name('assignments.toggle-status');
+    Route::get('/assignments/{assignment}/attachments/{attachment}/download', [AssignmentController::class, 'downloadAttachment'])->name('assignments.attachments.download');
+    Route::get('/assignments/{assignment}/files/{file}/download', [AssignmentController::class, 'downloadSubmissionFile'])->name('assignments.files.download');
+    Route::get('/assignments/{assignment}/submissions/{submission}', [AssignmentController::class, 'showSubmission'])->name('assignments.submissions.show');
+    Route::post('/assignments/{assignment}/submissions/{submission}/feedback', [AssignmentController::class, 'updateSubmissionFeedback'])->name('assignments.submissions.feedback');
 
     // Registration training options (for trainee signup)
     Route::resource('registration-trainings', RegistrationTrainingController::class)->except(['show']);

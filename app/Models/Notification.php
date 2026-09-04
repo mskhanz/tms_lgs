@@ -36,6 +36,9 @@ class Notification extends Model
 
         return match ($this->type) {
             'enrollment' => route('trainee.dashboard'),
+            'assignment' => ! empty($this->data['assignment_id'])
+                ? route('trainee.assignments.show', $this->data['assignment_id'])
+                : route('trainee.assignments.index'),
             default => route('notifications.index'),
         };
     }
@@ -44,6 +47,7 @@ class Notification extends Model
     {
         return $this->data['icon'] ?? match ($this->type) {
             'enrollment' => 'journal-check',
+            'assignment' => 'file-earmark-text',
             default => 'info-circle',
         };
     }
