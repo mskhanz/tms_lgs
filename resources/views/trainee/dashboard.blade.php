@@ -450,41 +450,51 @@
     @endif
 
     <div class="trainee-kpi-grid">
-        <a href="{{ route('trainee.dashboard') }}" class="trainee-kpi-card">
+        @if($ongoingEnrollments > 0)
+        <a href="{{ route('trainee.enrollments.index', ['status' => 'in_progress']) }}" class="trainee-kpi-card">
             <div class="trainee-kpi-icon blue"><i class="bi bi-play-circle"></i></div>
             <div>
                 <span class="trainee-kpi-value">{{ number_format($ongoingEnrollments) }}</span>
                 <span class="trainee-kpi-label">Ongoing trainings</span>
             </div>
         </a>
-        <a href="{{ route('trainee.dashboard') }}" class="trainee-kpi-card">
+        @endif
+        @if($completedEnrollments > 0)
+        <a href="{{ route('trainee.enrollments.index', ['status' => 'completed']) }}" class="trainee-kpi-card">
             <div class="trainee-kpi-icon emerald"><i class="bi bi-check-circle"></i></div>
             <div>
                 <span class="trainee-kpi-value">{{ number_format($completedEnrollments) }}</span>
                 <span class="trainee-kpi-label">Completed trainings</span>
             </div>
         </a>
-        <a href="{{ route('trainee.dashboard') }}" class="trainee-kpi-card">
+        @endif
+        @if($certificates > 0)
+        <a href="{{ route('trainee.enrollments.index', ['status' => 'completed']) }}" class="trainee-kpi-card">
             <div class="trainee-kpi-icon amber"><i class="bi bi-award"></i></div>
             <div>
                 <span class="trainee-kpi-value">{{ number_format($certificates) }}</span>
                 <span class="trainee-kpi-label">Certificates earned</span>
             </div>
         </a>
+        @endif
+        @if(($openQuizzesCount ?? 0) > 0)
         <a href="{{ route('trainee.quizzes.index') }}" class="trainee-kpi-card">
             <div class="trainee-kpi-icon teal"><i class="bi bi-clipboard-check"></i></div>
             <div>
-                <span class="trainee-kpi-value">{{ $openQuizzesCount ?? 0 }}</span>
+                <span class="trainee-kpi-value">{{ $openQuizzesCount }}</span>
                 <span class="trainee-kpi-label">Open quizzes</span>
             </div>
         </a>
+        @endif
+        @if(($openAssignmentsCount ?? 0) > 0)
         <a href="{{ route('trainee.assignments.index') }}" class="trainee-kpi-card">
             <div class="trainee-kpi-icon amber"><i class="bi bi-file-earmark-text"></i></div>
             <div>
-                <span class="trainee-kpi-value">{{ $openAssignmentsCount ?? 0 }}</span>
+                <span class="trainee-kpi-value">{{ $openAssignmentsCount }}</span>
                 <span class="trainee-kpi-label">Open assignments</span>
             </div>
         </a>
+        @endif
     </div>
 
     <!-- Available Quizzes -->
@@ -612,7 +622,7 @@
             <div class="trainee-panel">
                 <div class="trainee-panel-header">
                     <h5><i class="bi bi-clock-history me-2 text-success"></i>Recent Enrollments</h5>
-                    <a href="{{ route('trainee.profile.show') }}" class="trainee-panel-link">View profile</a>
+                    <a href="{{ route('trainee.enrollments.index') }}" class="trainee-panel-link">View all</a>
                 </div>
                 <div class="trainee-panel-body">
                     @forelse($recentEnrollments as $enrollment)

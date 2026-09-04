@@ -521,13 +521,32 @@ body {
 
 /* ===== TABLES ===== */
 .table-responsive {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
     border-radius: 8px;
-    overflow: hidden;
     box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+/* Safety net: any Bootstrap/data table that isn't already wrapped */
+.card-body > .table,
+.card > .table,
+.asg-panel-body > .table {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 .table {
     margin-bottom: 0;
+}
+
+.profile-table {
+    width: 100%;
+    border-collapse: collapse;
 }
 
 .table thead th {
@@ -536,6 +555,7 @@ body {
     font-weight: 600;
     border: none;
     padding: 15px;
+    white-space: nowrap;
 }
 
 .table tbody tr {
@@ -544,6 +564,26 @@ body {
 
 .table tbody tr:hover {
     background-color: rgba(52, 152, 219, 0.05);
+}
+
+.table td,
+.table th {
+    vertical-align: middle;
+}
+
+@media (max-width: 768px) {
+    .table-responsive .table,
+    .card-body > .table,
+    .asg-panel-body > .table,
+    .table-responsive .profile-table {
+        min-width: 560px;
+    }
+
+    .table thead th,
+    .table tbody td {
+        padding: 0.65rem 0.75rem;
+        font-size: 0.85rem;
+    }
 }
 
 /* ===== BADGES ===== */

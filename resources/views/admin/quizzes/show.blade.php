@@ -176,20 +176,22 @@
 <div class="card mt-4">
     <div class="card-header"><h5 class="mb-0">Trainee Attempts</h5></div>
     <div class="card-body p-0">
-        <table class="table table-sm mb-0">
-            <thead><tr><th>Trainee</th><th>Score</th><th>%</th><th>Result</th><th>Submitted</th></tr></thead>
-            <tbody>
-                @foreach($attempts as $attempt)
-                <tr>
-                    <td>{{ $attempt->user->name }}</td>
-                    <td>{{ $attempt->correct_answers }}/{{ $attempt->total_questions }}</td>
-                    <td>{{ $attempt->percentage }}%</td>
-                    <td><span class="badge bg-{{ $attempt->passed ? 'success' : 'danger' }}">{{ $attempt->passed ? 'Passed' : 'Failed' }}</span></td>
-                    <td>{{ $attempt->submitted_at?->format('d M Y H:i') }}</td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
+        <div class="table-responsive">
+            <table class="table table-sm mb-0">
+                <thead><tr><th>Trainee</th><th>Score</th><th>%</th><th>Result</th><th>Submitted</th></tr></thead>
+                <tbody>
+                    @foreach($attempts as $attempt)
+                    <tr>
+                        <td>{{ $attempt->user->name }}</td>
+                        <td>{{ $attempt->correct_answers }}/{{ $attempt->total_questions }}</td>
+                        <td>{{ $attempt->percentage }}%</td>
+                        <td><span class="badge bg-{{ $attempt->passed ? 'success' : 'danger' }}">{{ $attempt->passed ? 'Passed' : 'Failed' }}</span></td>
+                        <td>{{ $attempt->submitted_at?->format('d M Y H:i') }}</td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     </div>
     <div class="card-footer">{{ $attempts->links() }}</div>
 </div>

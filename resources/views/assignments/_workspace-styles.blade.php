@@ -168,6 +168,14 @@
         display: flex;
         flex-direction: column;
     }
+    .asg-panel:has(.table-responsive),
+    .asg-panel:has(.asg-table) {
+        overflow: visible;
+    }
+    .asg-panel-body.p-0 .table-responsive {
+        border-radius: 0;
+        box-shadow: none;
+    }
     .asg-panel.asg-panel-auto {
         height: auto;
     }

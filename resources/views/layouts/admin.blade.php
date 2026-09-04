@@ -69,8 +69,8 @@
                 </li>
 
                 <li class="sidebar-menu-item">
-                    <a href="{{ route('trainee.dashboard') }}" 
-                       class="sidebar-menu-link {{ request()->routeIs('trainee.dashboard') ? 'active' : '' }}">
+                    <a href="{{ route('trainee.enrollments.index') }}" 
+                       class="sidebar-menu-link {{ request()->routeIs('trainee.enrollments.*') ? 'active' : '' }}">
                         <i class="bi bi-journal-text"></i>
                         <span>My Enrollments</span>
                     </a>

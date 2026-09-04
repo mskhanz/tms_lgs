@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\{RegisteredUserController, AuthenticatedSessionController, EmailVerificationController, PasswordResetLinkController, NewPasswordController};
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\NotificationController;
-use App\Http\Controllers\Trainee\{DashboardController as TraineeDashboardController, ProfileController, QuizController as TraineeQuizController, AttendanceController as TraineeAttendanceController, AssignmentController as TraineeAssignmentController};
+use App\Http\Controllers\Trainee\{DashboardController as TraineeDashboardController, ProfileController, QuizController as TraineeQuizController, AttendanceController as TraineeAttendanceController, AssignmentController as TraineeAssignmentController, EnrollmentController as TraineeEnrollmentController};
 use App\Http\Controllers\Admin\{DashboardController as AdminDashboardController, EnrollmentController, ProgramController, BatchController, AttendanceController, UserController, RoleController, TraineeController, QuizController, AssignmentController, RegistrationTrainingController, ActivityLogController, OnlineUserController, LoginHistoryController};
 
 // Public routes
@@ -73,6 +73,7 @@ Route::middleware('auth')->group(function () {
 // Trainee routes (email verification disabled)
 Route::middleware(['auth'])->prefix('trainee')->name('trainee.')->group(function () {
     Route::get('/dashboard', [TraineeDashboardController::class, 'index'])->name('dashboard');
+    Route::get('/enrollments', [TraineeEnrollmentController::class, 'index'])->name('enrollments.index');
     
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
     Route::get('/profile/pdf', [ProfileController::class, 'downloadPdf'])->name('profile.pdf');

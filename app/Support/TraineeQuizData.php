@@ -73,6 +73,45 @@ class TraineeQuizData
     }
 
     /**
+     * Dashboard: only open quizzes the trainee can still take (not closed / not fully submitted).
+     *
+     * @return array{
+     *     availableQuizzes: \Illuminate\Support\Collection,
+     *     openQuizzesCount: int,
+     *     quizAttempts: \Illuminate\Support\Collection,
+     *     quizLoadError: string|null
+     * }
+     */
+    public static function forDashboard(?int $userId = null): array
+    {
+        $data = self::load($userId);
+        $attempts = $data['quizAttempts'];
+
+        $availableQuizzes = $data['availableQuizzes']->filter(function (Quiz $quiz) use ($attempts) {
+            if (! $quiz->isAvailable()) {
+                return false;
+            }
+
+            $userAttempts = $attempts->get($quiz->id, collect());
+            $completed = $userAttempts->where('status', 'completed')->count();
+            $inProgress = $userAttempts->firstWhere('status', 'in_progress');
+
+            if ($inProgress) {
+                return true;
+            }
+
+            return $completed < (int) $quiz->max_attempts;
+        })->values();
+
+        return [
+            'availableQuizzes' => $availableQuizzes,
+            'openQuizzesCount' => $availableQuizzes->count(),
+            'quizAttempts' => $attempts,
+            'quizLoadError' => $data['quizLoadError'],
+        ];
+    }
+
+    /**
      * @return array{
      *     quizzes: \Illuminate\Support\Collection,
      *     attempts: \Illuminate\Support\Collection,

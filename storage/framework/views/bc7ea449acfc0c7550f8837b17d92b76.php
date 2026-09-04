@@ -338,6 +338,15 @@
             justify-content: center;
         }
     }
+
+    .asg-countdown {
+        display: inline-block;
+        margin-left: 0.35rem;
+        color: #dc2626;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+    .asg-countdown.asg-countdown-overdue { color: #991b1b; }
 </style>
 <?php $__env->stopPush(); ?>
 
@@ -443,41 +452,51 @@
     <?php endif; ?>
 
     <div class="trainee-kpi-grid">
-        <a href="<?php echo e(route('trainee.dashboard')); ?>" class="trainee-kpi-card">
+        <?php if($ongoingEnrollments > 0): ?>
+        <a href="<?php echo e(route('trainee.enrollments.index', ['status' => 'in_progress'])); ?>" class="trainee-kpi-card">
             <div class="trainee-kpi-icon blue"><i class="bi bi-play-circle"></i></div>
             <div>
                 <span class="trainee-kpi-value"><?php echo e(number_format($ongoingEnrollments)); ?></span>
                 <span class="trainee-kpi-label">Ongoing trainings</span>
             </div>
         </a>
-        <a href="<?php echo e(route('trainee.dashboard')); ?>" class="trainee-kpi-card">
+        <?php endif; ?>
+        <?php if($completedEnrollments > 0): ?>
+        <a href="<?php echo e(route('trainee.enrollments.index', ['status' => 'completed'])); ?>" class="trainee-kpi-card">
             <div class="trainee-kpi-icon emerald"><i class="bi bi-check-circle"></i></div>
             <div>
                 <span class="trainee-kpi-value"><?php echo e(number_format($completedEnrollments)); ?></span>
                 <span class="trainee-kpi-label">Completed trainings</span>
             </div>
         </a>
-        <a href="<?php echo e(route('trainee.dashboard')); ?>" class="trainee-kpi-card">
+        <?php endif; ?>
+        <?php if($certificates > 0): ?>
+        <a href="<?php echo e(route('trainee.enrollments.index', ['status' => 'completed'])); ?>" class="trainee-kpi-card">
             <div class="trainee-kpi-icon amber"><i class="bi bi-award"></i></div>
             <div>
                 <span class="trainee-kpi-value"><?php echo e(number_format($certificates)); ?></span>
                 <span class="trainee-kpi-label">Certificates earned</span>
             </div>
         </a>
+        <?php endif; ?>
+        <?php if(($openQuizzesCount ?? 0) > 0): ?>
         <a href="<?php echo e(route('trainee.quizzes.index')); ?>" class="trainee-kpi-card">
             <div class="trainee-kpi-icon teal"><i class="bi bi-clipboard-check"></i></div>
             <div>
-                <span class="trainee-kpi-value"><?php echo e($openQuizzesCount ?? 0); ?></span>
+                <span class="trainee-kpi-value"><?php echo e($openQuizzesCount); ?></span>
                 <span class="trainee-kpi-label">Open quizzes</span>
             </div>
         </a>
+        <?php endif; ?>
+        <?php if(($openAssignmentsCount ?? 0) > 0): ?>
         <a href="<?php echo e(route('trainee.assignments.index')); ?>" class="trainee-kpi-card">
             <div class="trainee-kpi-icon amber"><i class="bi bi-file-earmark-text"></i></div>
             <div>
-                <span class="trainee-kpi-value"><?php echo e($openAssignmentsCount ?? 0); ?></span>
+                <span class="trainee-kpi-value"><?php echo e($openAssignmentsCount); ?></span>
                 <span class="trainee-kpi-label">Open assignments</span>
             </div>
         </a>
+        <?php endif; ?>
     </div>
 
     <!-- Available Quizzes -->
@@ -605,7 +624,7 @@
             <div class="trainee-panel">
                 <div class="trainee-panel-header">
                     <h5><i class="bi bi-clock-history me-2 text-success"></i>Recent Enrollments</h5>
-                    <a href="<?php echo e(route('trainee.profile.show')); ?>" class="trainee-panel-link">View profile</a>
+                    <a href="<?php echo e(route('trainee.enrollments.index')); ?>" class="trainee-panel-link">View all</a>
                 </div>
                 <div class="trainee-panel-body">
                     <?php $__empty_1 = true; $__currentLoopData = $recentEnrollments; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $enrollment): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
@@ -783,6 +802,7 @@
         <?php endif; ?>
     </div>
 </div>
+<?php echo $__env->make('assignments._due-countdown-script', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 <?php $__env->stopSection(); ?>
 
 <?php echo $__env->make('layouts.admin', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\tms_lgs\resources\views/trainee/dashboard.blade.php ENDPATH**/ ?>

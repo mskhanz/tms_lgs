@@ -79,6 +79,39 @@ class TraineeAssignmentData
     }
 
     /**
+     * Dashboard: only open assignments that are not yet submitted.
+     *
+     * @return array{
+     *     availableAssignments: \Illuminate\Support\Collection,
+     *     openAssignmentsCount: int,
+     *     assignmentSubmissions: \Illuminate\Support\Collection,
+     *     assignmentLoadError: string|null
+     * }
+     */
+    public static function forDashboard(?int $userId = null): array
+    {
+        $data = self::load($userId);
+        $submissions = $data['assignmentSubmissions'];
+
+        $availableAssignments = $data['availableAssignments']->filter(function (Assignment $assignment) use ($submissions) {
+            if (! $assignment->isAvailable()) {
+                return false;
+            }
+
+            $submission = $submissions->get($assignment->id);
+
+            return ! $submission || ! $submission->isSubmitted();
+        })->values();
+
+        return [
+            'availableAssignments' => $availableAssignments,
+            'openAssignmentsCount' => $availableAssignments->count(),
+            'assignmentSubmissions' => $submissions,
+            'assignmentLoadError' => $data['assignmentLoadError'],
+        ];
+    }
+
+    /**
      * @return array{
      *     assignments: \Illuminate\Support\Collection,
      *     submissions: \Illuminate\Support\Collection,

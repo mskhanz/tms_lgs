@@ -88,8 +88,8 @@ class DashboardController extends Controller
         $notifications = $user->notifications()->unread()->latest()->limit(5)->get();
         $unreadNotificationsCount = $user->notifications()->unread()->count();
 
-        $quizData = TraineeQuizData::load($user->id);
-        $assignmentData = TraineeAssignmentData::load($user->id);
+        $quizData = TraineeQuizData::forDashboard($user->id);
+        $assignmentData = TraineeAssignmentData::forDashboard($user->id);
 
         return view('trainee.dashboard', array_merge(
             compact(

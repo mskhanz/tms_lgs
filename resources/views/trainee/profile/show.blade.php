@@ -442,6 +442,11 @@
         border-collapse: collapse;
         margin-bottom: 1rem;
     }
+    @media (max-width: 768px) {
+        .table-responsive .profile-table {
+            min-width: 640px;
+        }
+    }
     .profile-table th,
     .profile-table td {
         border: 1px solid #e2e8f0;

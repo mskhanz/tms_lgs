@@ -70,8 +70,8 @@
                 </li>
 
                 <li class="sidebar-menu-item">
-                    <a href="<?php echo e(route('trainee.dashboard')); ?>" 
-                       class="sidebar-menu-link <?php echo e(request()->routeIs('trainee.dashboard') ? 'active' : ''); ?>">
+                    <a href="<?php echo e(route('trainee.enrollments.index')); ?>" 
+                       class="sidebar-menu-link <?php echo e(request()->routeIs('trainee.enrollments.*') ? 'active' : ''); ?>">
                         <i class="bi bi-journal-text"></i>
                         <span>My Enrollments</span>
                     </a>
