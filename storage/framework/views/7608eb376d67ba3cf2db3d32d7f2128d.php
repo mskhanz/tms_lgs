@@ -327,6 +327,28 @@
             transform: translateY(-1px);
         }
 
+        .btn-signin:disabled,
+        .btn-signin.is-loading {
+            cursor: wait;
+            opacity: 0.88;
+            transform: none;
+            pointer-events: none;
+        }
+
+        .btn-signin .btn-signin-spinner {
+            width: 1.1rem;
+            height: 1.1rem;
+            border: 2px solid rgba(255, 255, 255, 0.35);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: btn-signin-spin 0.7s linear infinite;
+            flex-shrink: 0;
+        }
+
+        @keyframes btn-signin-spin {
+            to { transform: rotate(360deg); }
+        }
+
         .auth-footer-right {
             flex-shrink: 0;
             width: 100%;

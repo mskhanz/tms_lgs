@@ -31,7 +31,7 @@
 </div>
 @endif
 
-<form method="POST" action="{{ route('login') }}">
+<form method="POST" action="{{ route('login') }}" id="loginForm">
     @csrf
 
     <div class="form-floating-custom">
@@ -70,9 +70,15 @@
         <a href="{{ route('password.request') }}" class="forgot-link">Forgot password?</a>
     </div>
 
-    <button type="submit" class="btn-signin">
-        <i class="bi bi-box-arrow-in-right"></i>
-        Sign In
+    <button type="submit" class="btn-signin" id="signinBtn">
+        <span class="btn-signin-idle">
+            <i class="bi bi-box-arrow-in-right"></i>
+            Sign In
+        </span>
+        <span class="btn-signin-busy d-none">
+            <span class="btn-signin-spinner" aria-hidden="true"></span>
+            Signing in…
+        </span>
     </button>
 </form>
 
@@ -97,6 +103,28 @@
             icon.className = 'bi bi-eye';
         }
     });
+
+    (function () {
+        const form = document.getElementById('loginForm');
+        const btn = document.getElementById('signinBtn');
+        if (!form || !btn) return;
+
+        form.addEventListener('submit', function () {
+            if (btn.classList.contains('is-loading')) {
+                return;
+            }
+
+            btn.classList.add('is-loading');
+            btn.disabled = true;
+            const idle = btn.querySelector('.btn-signin-idle');
+            const busy = btn.querySelector('.btn-signin-busy');
+            if (idle) idle.classList.add('d-none');
+            if (busy) {
+                busy.classList.remove('d-none');
+                busy.classList.add('d-inline-flex', 'align-items-center', 'gap-2');
+            }
+        });
+    })();
 </script>
 @endpush
 @endsection

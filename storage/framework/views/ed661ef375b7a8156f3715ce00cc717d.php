@@ -31,7 +31,7 @@
 </div>
 <?php endif; ?>
 
-<form method="POST" action="<?php echo e(route('login')); ?>">
+<form method="POST" action="<?php echo e(route('login')); ?>" id="loginForm">
     <?php echo csrf_field(); ?>
 
     <div class="form-floating-custom">
@@ -84,9 +84,15 @@ unset($__errorArgs, $__bag); ?>
         <a href="<?php echo e(route('password.request')); ?>" class="forgot-link">Forgot password?</a>
     </div>
 
-    <button type="submit" class="btn-signin">
-        <i class="bi bi-box-arrow-in-right"></i>
-        Sign In
+    <button type="submit" class="btn-signin" id="signinBtn">
+        <span class="btn-signin-idle">
+            <i class="bi bi-box-arrow-in-right"></i>
+            Sign In
+        </span>
+        <span class="btn-signin-busy d-none">
+            <span class="btn-signin-spinner" aria-hidden="true"></span>
+            Signing in…
+        </span>
     </button>
 </form>
 
@@ -111,6 +117,28 @@ unset($__errorArgs, $__bag); ?>
             icon.className = 'bi bi-eye';
         }
     });
+
+    (function () {
+        const form = document.getElementById('loginForm');
+        const btn = document.getElementById('signinBtn');
+        if (!form || !btn) return;
+
+        form.addEventListener('submit', function () {
+            if (btn.classList.contains('is-loading')) {
+                return;
+            }
+
+            btn.classList.add('is-loading');
+            btn.disabled = true;
+            const idle = btn.querySelector('.btn-signin-idle');
+            const busy = btn.querySelector('.btn-signin-busy');
+            if (idle) idle.classList.add('d-none');
+            if (busy) {
+                busy.classList.remove('d-none');
+                busy.classList.add('d-inline-flex', 'align-items-center', 'gap-2');
+            }
+        });
+    })();
 </script>
 <?php $__env->stopPush(); ?>
 <?php $__env->stopSection(); ?>
