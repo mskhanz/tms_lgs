@@ -40,8 +40,8 @@
             <ul class="sidebar-menu">
                 <!-- Dashboard -->
                 <li class="sidebar-menu-item">
-                    <a href="<?php echo e(route('dashboard')); ?>" 
-                       class="sidebar-menu-link <?php echo e(request()->routeIs('dashboard') ? 'active' : ''); ?>">
+                    <a href="<?php echo e(auth()->user()->isTrainee() ? route('trainee.dashboard') : route('admin.dashboard')); ?>"
+                       class="sidebar-menu-link <?php echo e(request()->routeIs('trainee.dashboard', 'admin.dashboard', 'dashboard') ? 'active' : ''); ?>">
                         <i class="bi bi-speedometer2"></i>
                         <span>Dashboard</span>
                     </a>
@@ -133,7 +133,7 @@
                 </li>
 
                 <li class="sidebar-menu-item has-submenu <?php echo e(request()->routeIs('admin.programs.*') || request()->routeIs('admin.batches.*') ? 'open' : ''); ?>">
-                    <a href="#" class="sidebar-menu-link">
+                    <a href="#" class="sidebar-menu-link <?php echo e(request()->routeIs('admin.programs.*') || request()->routeIs('admin.batches.*') ? 'active' : ''); ?>">
                         <i class="bi bi-book"></i>
                         <span>Training Programs</span>
                         <i class="bi bi-chevron-down"></i>
@@ -163,19 +163,19 @@
                 </li>
 
                 <li class="sidebar-menu-item has-submenu <?php echo e(request()->routeIs('admin.enrollments.*') ? 'open' : ''); ?>">
-                    <a href="#" class="sidebar-menu-link">
+                    <a href="#" class="sidebar-menu-link <?php echo e(request()->routeIs('admin.enrollments.*') ? 'active' : ''); ?>">
                         <i class="bi bi-person-check"></i>
                         <span>Enrollments</span>
                         <i class="bi bi-chevron-down"></i>
                     </a>
                     <ul class="sidebar-submenu">
                         <li>
-                            <a href="<?php echo e(route('admin.enrollments.index')); ?>" class="sidebar-menu-link">
+                            <a href="<?php echo e(route('admin.enrollments.index')); ?>" class="sidebar-menu-link <?php echo e(request()->routeIs('admin.enrollments.index', 'admin.enrollments.show', 'admin.enrollments.edit') ? 'active' : ''); ?>">
                                 <i class="bi bi-list-check"></i> All Enrollments
                             </a>
                         </li>
                         <li>
-                            <a href="<?php echo e(route('admin.enrollments.create')); ?>" class="sidebar-menu-link">
+                            <a href="<?php echo e(route('admin.enrollments.create')); ?>" class="sidebar-menu-link <?php echo e(request()->routeIs('admin.enrollments.create') ? 'active' : ''); ?>">
                                 <i class="bi bi-plus-circle"></i> New Enrollment
                             </a>
                         </li>
@@ -183,7 +183,7 @@
                 </li>
 
                 <li class="sidebar-menu-item">
-                    <a href="<?php echo e(route('admin.trainees.index')); ?>" class="sidebar-menu-link">
+                    <a href="<?php echo e(route('admin.trainees.index')); ?>" class="sidebar-menu-link <?php echo e(request()->routeIs('admin.trainees.*') ? 'active' : ''); ?>">
                         <i class="bi bi-people"></i>
                         <span>Trainees</span>
                     </a>
@@ -205,26 +205,26 @@
                 </li>
 
                 <li class="sidebar-menu-item">
-                    <a href="<?php echo e(route('admin.registration-trainings.index')); ?>" class="sidebar-menu-link">
+                    <a href="<?php echo e(route('admin.registration-trainings.index')); ?>" class="sidebar-menu-link <?php echo e(request()->routeIs('admin.registration-trainings.*') ? 'active' : ''); ?>">
                         <i class="bi bi-mortarboard"></i>
                         <span>Registration Trainings</span>
                     </a>
                 </li>
 
                 <li class="sidebar-menu-item has-submenu <?php echo e(request()->routeIs('admin.quizzes.*') ? 'open' : ''); ?>">
-                    <a href="#" class="sidebar-menu-link">
+                    <a href="#" class="sidebar-menu-link <?php echo e(request()->routeIs('admin.quizzes.*') ? 'active' : ''); ?>">
                         <i class="bi bi-clipboard-check"></i>
                         <span>Quizzes</span>
                         <i class="bi bi-chevron-down"></i>
                     </a>
                     <ul class="sidebar-submenu">
                         <li>
-                            <a href="<?php echo e(route('admin.quizzes.index')); ?>" class="sidebar-menu-link">
+                            <a href="<?php echo e(route('admin.quizzes.index')); ?>" class="sidebar-menu-link <?php echo e(request()->routeIs('admin.quizzes.*') && ! request()->routeIs('admin.quizzes.create') ? 'active' : ''); ?>">
                                 <i class="bi bi-list-task"></i> All Quizzes
                             </a>
                         </li>
                         <li>
-                            <a href="<?php echo e(route('admin.quizzes.create')); ?>" class="sidebar-menu-link">
+                            <a href="<?php echo e(route('admin.quizzes.create')); ?>" class="sidebar-menu-link <?php echo e(request()->routeIs('admin.quizzes.create') ? 'active' : ''); ?>">
                                 <i class="bi bi-plus-circle"></i> Create Quiz
                             </a>
                         </li>
@@ -232,19 +232,19 @@
                 </li>
 
                 <li class="sidebar-menu-item has-submenu <?php echo e(request()->routeIs('admin.assignments.*') ? 'open' : ''); ?>">
-                    <a href="#" class="sidebar-menu-link">
+                    <a href="#" class="sidebar-menu-link <?php echo e(request()->routeIs('admin.assignments.*') ? 'active' : ''); ?>">
                         <i class="bi bi-file-earmark-text"></i>
                         <span>Assignments</span>
                         <i class="bi bi-chevron-down"></i>
                     </a>
                     <ul class="sidebar-submenu">
                         <li>
-                            <a href="<?php echo e(route('admin.assignments.index')); ?>" class="sidebar-menu-link">
+                            <a href="<?php echo e(route('admin.assignments.index')); ?>" class="sidebar-menu-link <?php echo e(request()->routeIs('admin.assignments.*') && ! request()->routeIs('admin.assignments.create') ? 'active' : ''); ?>">
                                 <i class="bi bi-list-task"></i> All Assignments
                             </a>
                         </li>
                         <li>
-                            <a href="<?php echo e(route('admin.assignments.create')); ?>" class="sidebar-menu-link">
+                            <a href="<?php echo e(route('admin.assignments.create')); ?>" class="sidebar-menu-link <?php echo e(request()->routeIs('admin.assignments.create') ? 'active' : ''); ?>">
                                 <i class="bi bi-plus-circle"></i> Create Assignment
                             </a>
                         </li>
@@ -270,20 +270,20 @@
                 <!-- System Settings -->
                 <li class="sidebar-menu-header">System</li>
 
-                <li class="sidebar-menu-item has-submenu">
-                    <a href="#" class="sidebar-menu-link">
+                <li class="sidebar-menu-item has-submenu <?php echo e(request()->routeIs('admin.users.*', 'admin.roles.*') ? 'open' : ''); ?>">
+                    <a href="#" class="sidebar-menu-link <?php echo e(request()->routeIs('admin.users.*', 'admin.roles.*') ? 'active' : ''); ?>">
                         <i class="bi bi-people-fill"></i>
                         <span>User Management</span>
                         <i class="bi bi-chevron-down"></i>
                     </a>
                     <ul class="sidebar-submenu">
                         <li>
-                            <a href="<?php echo e(route('admin.users.index')); ?>" class="sidebar-menu-link">
+                            <a href="<?php echo e(route('admin.users.index')); ?>" class="sidebar-menu-link <?php echo e(request()->routeIs('admin.users.*') ? 'active' : ''); ?>">
                                 <i class="bi bi-person-lines-fill"></i> Users
                             </a>
                         </li>
                         <li>
-                            <a href="<?php echo e(route('admin.roles.index')); ?>" class="sidebar-menu-link">
+                            <a href="<?php echo e(route('admin.roles.index')); ?>" class="sidebar-menu-link <?php echo e(request()->routeIs('admin.roles.*') ? 'active' : ''); ?>">
                                 <i class="bi bi-shield-check"></i> Roles & Permissions
                             </a>
                         </li>
@@ -291,7 +291,7 @@
                 </li>
 
                 <li class="sidebar-menu-item has-submenu <?php echo e(request()->routeIs('admin.activity-logs.*', 'admin.online-users.*', 'admin.login-history.*') ? 'open' : ''); ?>">
-                    <a href="#" class="sidebar-menu-link">
+                    <a href="#" class="sidebar-menu-link <?php echo e(request()->routeIs('admin.activity-logs.*', 'admin.online-users.*', 'admin.login-history.*') ? 'active' : ''); ?>">
                         <i class="bi bi-clipboard-data"></i>
                         <span>Logs & Audit</span>
                         <i class="bi bi-chevron-down"></i>
@@ -555,6 +555,7 @@
             link.addEventListener('click', function(e) {
                 e.preventDefault();
                 const parent = this.parentElement;
+                const willOpen = !parent.classList.contains('open');
 
                 document.querySelectorAll('.sidebar-menu-item.has-submenu').forEach(item => {
                     if (item !== parent) {
@@ -562,13 +563,26 @@
                     }
                 });
 
-                parent.classList.toggle('open');
+                parent.classList.toggle('open', willOpen);
             });
         });
 
+        // Keep the current page's menu/submenu open and highlighted.
+        document.querySelectorAll('.sidebar-menu-item.has-submenu').forEach(function (item) {
+            if (item.querySelector('.sidebar-menu-link.active')) {
+                item.classList.add('open');
+            }
+        });
+
+        const activeSidebarLink = appSidebar.querySelector('.sidebar-submenu .sidebar-menu-link.active, .sidebar-menu-item:not(.has-submenu) > .sidebar-menu-link.active');
+        if (activeSidebarLink) {
+            activeSidebarLink.scrollIntoView({ block: 'nearest' });
+        }
+
         appSidebar.querySelectorAll('.sidebar-menu-link').forEach(function (link) {
             link.addEventListener('click', function () {
-                if (isMobileSidebar()) {
+                const href = link.getAttribute('href') || '';
+                if (isMobileSidebar() && href && href !== '#') {
                     setTimeout(closeSidebar, 120);
                 }
             });

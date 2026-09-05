@@ -176,6 +176,20 @@ body {
     font-weight: 600;
 }
 
+.sidebar-menu-item.has-submenu.open > .sidebar-menu-link {
+    background-color: rgba(5, 150, 105, 0.08);
+    color: var(--primary-color);
+    border-left-color: var(--primary-color);
+    font-weight: 600;
+}
+
+.sidebar-submenu .sidebar-menu-link.active {
+    background-color: rgba(5, 150, 105, 0.14);
+    color: var(--primary-color);
+    border-left-color: var(--primary-color);
+    border-radius: 0 8px 8px 0;
+}
+
 .sidebar-menu-link i {
     width: 24px;
     margin-right: 12px;
